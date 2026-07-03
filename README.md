@@ -1,3 +1,4 @@
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ![Tests](https://img.shields.io/badge/Tests-72%2F72_Passing-brightgreen.svg)
 # ChromaPlex OS v2 — Faceted Crystal Storage with Blockchain
 
 A programming language and software stack for optical crystal data storage.
