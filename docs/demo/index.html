@@ -2,334 +2,433 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ChromaPlex v2 — Interactive Demo</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#0F0A1A;color:#E0E0E0;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
-.header{text-align:center;padding:24px 16px 12px}
-.header h1{font-size:32px;font-weight:700;color:#fff}.header h1 span{color:#00FF88}
-.header p{color:#9CA3AF;font-size:14px;margin-top:4px}
-.main{max-width:960px;margin:0 auto;padding:0 16px 40px}
-.panel{background:#1A1230;border-radius:8px;margin-bottom:16px;overflow:hidden;border:1px solid #2A2040}
-.panel-head{background:#252040;padding:8px 14px;font-size:13px;font-weight:600;color:#9CA3AF;display:flex;justify-content:space-between;align-items:center}
-.panel-body{padding:14px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:700px){.row{grid-template-columns:1fr}}
-textarea{width:100%;background:#0F0A1A;color:#A9B7C6;border:1px solid #2A2040;border-radius:4px;padding:10px;font-family:'Consolas','Courier New',monospace;font-size:13px;line-height:1.6;resize:vertical}
-button.run{background:#00FF88;color:#0F0A1A;border:none;padding:6px 18px;border-radius:4px;font-size:13px;font-weight:600;cursor:pointer}
-button.run:hover{background:#00DD77}
-.output{background:#0F0A1A;border:1px solid #2A2040;border-radius:4px;padding:10px;font-family:monospace;font-size:12px;line-height:1.6;min-height:120px;white-space:pre-wrap;color:#A9B7C6}
-.crystal-svg{text-align:center;padding:8px}
-.stat-row{display:flex;gap:8px;flex-wrap:wrap}
-.stat{background:#0F0A1A;border-radius:4px;padding:8px 14px;flex:1;min-width:80px;text-align:center}
-.stat .n{font-size:22px;font-weight:700;color:#00FF88}
-.stat .l{font-size:10px;color:#9CA3AF}
-.chain-entry{background:#0F0A1A;border-radius:4px;padding:6px 10px;margin-bottom:4px;font-family:monospace;font-size:11px;display:flex;justify-content:space-between}
-.tag{display:inline-block;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600}
-.tag-write{background:#F59E0B;color:#0F0A1A}
-.tag-extract{background:#22D3EE;color:#0F0A1A}
-.tag-wallet{background:#00FF88;color:#0F0A1A}
-a{color:#22D3EE;text-decoration:none}
-a:hover{text-decoration:underline}
-.links{text-align:center;padding:20px;font-size:13px;color:#6B7280}
-.links a{margin:0 12px}
-#facet5{transition:fill 0.3s}
+body{background:#0a0a0a;color:#00ff88;font-family:'Courier New',monospace;min-height:100vh}
+.top{text-align:center;padding:12px;border-bottom:1px dashed #00ff8844}
+.top h1{font-size:24px;letter-spacing:2px}.top h1 span{color:#fff}
+.top p{font-size:11px;color:#00ff8888;margin-top:2px}
+.wrap{display:grid;grid-template-columns:320px 1fr 280px;min-height:calc(100vh - 80px)}
+@media(max-width:900px){.wrap{grid-template-columns:1fr;grid-template-rows:auto auto auto}}
+.col{border-right:1px dashed #00ff8833;padding:12px}
+.col:last-child{border-right:none}
+label{display:block;font-size:11px;color:#00ff88;margin:8px 0 3px;text-transform:uppercase;letter-spacing:1px}
+select,input[type=number]{width:100%;background:#111;color:#00ff88;border:1px solid #00ff8844;padding:6px 8px;font-family:inherit;font-size:13px;border-radius:3px}
+select option{background:#111;color:#00ff88}
+input[type=range]{width:100%;accent-color:#00ff88}
+button{width:100%;background:#00ff88;color:#000;border:none;padding:8px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;border-radius:3px;margin-top:6px;text-transform:uppercase;letter-spacing:1px}
+button:hover{background:#00dd77}
+button.secondary{background:#333;color:#00ff88;border:1px solid #00ff8844}
+button.secondary:hover{background:#444}
+button.red{background:#ff4444;color:#fff}
+.tabs{display:flex;gap:2px;margin-top:10px}
+.tab{flex:1;padding:5px;text-align:center;font-size:11px;cursor:pointer;background:#1a1a1a;border:1px solid #00ff8833;color:#666}
+.tab.active{background:#00ff8822;color:#00ff88;border-color:#00ff88}
+textarea{width:100%;background:#0a0a0a;color:#00ff88;border:1px solid #00ff8844;padding:8px;font-family:'Courier New',monospace;font-size:12px;line-height:1.5;resize:vertical;border-radius:3px}
+.output{background:#0a0a0a;border:1px solid #00ff8844;padding:8px;font-size:11px;line-height:1.5;min-height:80px;max-height:200px;overflow-y:auto;border-radius:3px;white-space:pre-wrap}
+.val-display{background:#111;border:1px solid #00ff8844;border-radius:3px;padding:8px;text-align:center;margin:6px 0}
+.val-display .big{font-size:24px;color:#fff;font-weight:700}
+.val-display .sub{font-size:11px;color:#00ff8888}
+.sensor-bar{display:flex;align-items:center;gap:6px;margin:3px 0}
+.sensor-bar .lbl{width:55px;font-size:11px}
+.sensor-bar .bar{flex:1;height:10px;background:#1a1a1a;border-radius:2px;overflow:hidden}
+.sensor-bar .bar div{height:100%;border-radius:2px;transition:width 0.4s}
+.sensor-bar .val{width:30px;text-align:right;font-size:11px}
+.chain-entry{background:#111;border:1px solid #00ff8822;border-radius:3px;padding:5px 8px;margin:3px 0;font-size:10px;display:flex;justify-content:space-between}
+.tag{padding:1px 5px;border-radius:2px;font-size:9px;font-weight:700}
+.t-w{background:#ff8800;color:#000}.t-e{background:#00ccff;color:#000}.t-wallet{background:#00ff88;color:#000}
+.stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin:6px 0}
+.stat{background:#111;border-radius:3px;padding:6px;text-align:center}
+.stat .n{font-size:18px;color:#fff;font-weight:700}
+.stat .l{font-size:9px;color:#00ff8888}
+svg text{font-family:'Courier New',monospace}
+.facet-poly{cursor:pointer;transition:fill 0.2s,stroke 0.2s}
+.facet-poly:hover{stroke:#ffff00;stroke-width:2}
+.links{text-align:center;padding:8px;font-size:10px;border-top:1px dashed #00ff8833}
+.links a{color:#00ccff;margin:0 8px;text-decoration:none}
+.colour-indicator{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:middle}
 </style>
 </head>
 <body>
-<div class="header">
-<h1>Chroma<span>Plex</span> v2 — Interactive Demo</h1>
-<p>57-facet crystal storage with blockchain and lens readout</p>
+<div class="top">
+<h1>Chroma<span>Plex</span> OS v2</h1>
+<p>Interactive Faceted Crystal Storage Demo — 5 Laser Channels — Blockchain — Lens Readout</p>
 </div>
-<div class="main">
+<div class="wrap">
 
-<div class="row">
+<!-- LEFT: Controls -->
+<div class="col">
+<label>Facet (0–56)</label>
+<input type="range" id="facet-slider" min="0" max="56" value="5" oninput="updateFacetLabel()">
+<div style="display:flex;justify-content:space-between;font-size:11px"><span>Bord</span><span id="facet-val">Facet #5 (Krone)</span><span>Pavillon</span></div>
+
+<label>Bølgelængde / Laser</label>
+<select id="colour-select">
+<option value="uv" style="color:#9933ff">UV (350nm)</option>
+<option value="violet" style="color:#cc66ff">Violet (405nm)</option>
+<option value="blå" style="color:#00ccff">Blå (473nm)</option>
+<option value="grøn" style="color:#00ff88" selected>Grøn (532nm)</option>
+<option value="rød" style="color:#ff4444">Rød (650nm)</option>
+</select>
+
+<label>Base (eksponent)</label>
+<select id="base-select">
+<option value="2">Base 2</option>
+<option value="3" selected>Base 3</option>
+<option value="5">Base 5</option>
+<option value="7">Base 7</option>
+<option value="10">Base 10</option>
+</select>
+
+<label>Værdi</label>
+<input type="number" id="value-input" value="1234567" min="1" max="99999999">
+
+<button onclick="doStore()">STORE (SKRIV)</button>
+<button class="secondary" onclick="doLensCapture()">LENS CAPTURE (LÆS)</button>
+<button class="secondary" onclick="doLensToChain()">LENS → BLOCKCHAIN</button>
+<button class="secondary" onclick="doLoad()">LOAD (LÆS DIREKTE)</button>
+
+<div class="val-display" id="read-display" style="display:none">
+<div class="big" id="read-value">—</div>
+<div class="sub" id="read-repr">—</div>
+</div>
+
 <!-- Code editor -->
-<div class="panel">
-<div class="panel-head">
-<span>CPL Program</span>
-<button class="run" onclick="runProgram()">▶ Run</button>
+<div class="tabs">
+<div class="tab active" id="tab-cpl" onclick="switchTab('cpl')">CPL</div>
+<div class="tab" id="tab-py" onclick="switchTab('py')">Python</div>
 </div>
-<div class="panel-body">
-<textarea id="code" rows="14">// ChromaPlex v2 demo
-var data = 1234567;
-
-// Store in crystal facet 5
+<textarea id="code-cpl" rows="8">var data = 1234567;
 store data at facet(0, 5) colour GREEN;
-
-// Lens reads passively
 lens_capture facet(0, 5);
-
-// Send to blockchain
 lens_to_chain;
-
-// Read back
 load result from facet(0, 5) colour GREEN;
 print result;</textarea>
-</div>
+<textarea id="code-py" rows="8" style="display:none">cx.store(facet=5, colour="GREEN", value=1234567, base=3)
+cx.lens_capture(facet=5)
+cx.lens_to_chain()
+result = cx.load(facet=5, colour="GREEN")
+print(result)</textarea>
+<button onclick="runCode()">▶ KØR KODE</button>
 </div>
 
-<!-- Crystal + Sensor -->
-<div>
-<div class="panel">
-<div class="panel-head"><span>Crystal — 57 Facets</span><span id="active-facet">—</span></div>
-<div class="panel-body crystal-svg">
-<svg viewBox="0 0 240 220" width="220" id="crystal-svg">
-<polygon points="120,8 80,65 160,65" fill="#1A1230" stroke="#7C3AED" stroke-width="1"/>
-<polygon points="80,65 45,65 65,8" fill="#1A1230" stroke="#534AB7" stroke-width="0.5"/>
-<polygon points="160,65 195,65 175,8" fill="#1A1230" stroke="#534AB7" stroke-width="0.5"/>
-<polygon points="65,8 120,8 80,65" fill="#1E1445" stroke="#534AB7" stroke-width="0.5"/>
-<polygon points="175,8 120,8 160,65" fill="#1E1445" stroke="#534AB7" stroke-width="0.5"/>
-<polygon id="facet5" points="95,40 120,8 105,65" fill="#1A1230" stroke="#534AB7" stroke-width="0.5"/>
-<line x1="45" y1="65" x2="195" y2="65" stroke="#534AB7" stroke-width="1"/>
-<polygon points="45,65 120,200 80,65" fill="#0F1A2E" stroke="#534AB7" stroke-width="0.5"/>
-<polygon points="80,65 120,200 120,65" fill="#0F0A1A" stroke="#534AB7" stroke-width="0.5"/>
-<polygon points="120,65 120,200 160,65" fill="#0F1A2E" stroke="#534AB7" stroke-width="0.5"/>
-<polygon points="160,65 120,200 195,65" fill="#0F0A1A" stroke="#534AB7" stroke-width="0.5"/>
-<line id="laser-beam" x1="0" y1="40" x2="0" y2="40" stroke="#00FF88" stroke-width="2" stroke-dasharray="4,3" opacity="0"/>
-<line id="refr-r" x1="150" y1="50" x2="240" y2="72" stroke="#EF4444" stroke-width="1" opacity="0"/>
-<line id="refr-g" x1="150" y1="50" x2="240" y2="62" stroke="#00FF88" stroke-width="1" opacity="0"/>
-<line id="refr-b" x1="150" y1="50" x2="240" y2="52" stroke="#22D3EE" stroke-width="1" opacity="0"/>
-<text id="laser-label" x="3" y="34" fill="#00FF88" font-size="9" font-family="monospace" opacity="0">LASER →</text>
-<text id="lens-label" x="200" y="48" fill="#9CA3AF" font-size="8" font-family="monospace" opacity="0">→ LENS</text>
+<!-- CENTER: Crystal -->
+<div class="col" style="display:flex;flex-direction:column">
+<div style="flex:1;display:flex;align-items:center;justify-content:center">
+<svg viewBox="0 0 360 380" width="100%" id="crystal-svg" style="max-width:400px">
+<!-- Laser beam -->
+<line id="laser-line" x1="0" y1="0" x2="0" y2="0" stroke="#00ff88" stroke-width="2" stroke-dasharray="5,3" opacity="0">
+<animate attributeName="stroke-dashoffset" values="0;-8" dur="0.4s" repeatCount="indefinite"/>
+</line>
+
+<!-- Crown facets - Table -->
+<polygon id="f0" class="facet-poly" points="180,20 140,80 220,80" fill="#1a1a1a" stroke="#00ff8844" stroke-width="1" onclick="clickFacet(0)" data-group="bord"/>
+
+<!-- Crown star facets -->
+<polygon id="f1" class="facet-poly" points="140,80 120,55 160,20" fill="#111" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(1)" data-group="krone"/>
+<polygon id="f2" class="facet-poly" points="160,20 180,20 140,80" fill="#151515" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(2)" data-group="krone"/>
+<polygon id="f3" class="facet-poly" points="180,20 200,20 220,80" fill="#151515" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(3)" data-group="krone"/>
+<polygon id="f4" class="facet-poly" points="220,80 240,55 200,20" fill="#111" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(4)" data-group="krone"/>
+<polygon id="f5" class="facet-poly" points="120,55 140,80 100,90" fill="#111" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(5)" data-group="krone"/>
+<polygon id="f6" class="facet-poly" points="240,55 220,80 260,90" fill="#111" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(6)" data-group="krone"/>
+<polygon id="f7" class="facet-poly" points="100,90 140,80 80,100" fill="#0d0d0d" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(7)" data-group="krone"/>
+<polygon id="f8" class="facet-poly" points="260,90 220,80 280,100" fill="#0d0d0d" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(8)" data-group="krone"/>
+
+<!-- Upper girdle -->
+<polygon id="f9" class="facet-poly" points="80,100 140,80 100,120" fill="#0f0f0f" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(9)" data-group="girdle"/>
+<polygon id="f10" class="facet-poly" points="100,120 140,80 140,120" fill="#121212" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(10)" data-group="girdle"/>
+<polygon id="f11" class="facet-poly" points="140,120 140,80 180,120" fill="#0f0f0f" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(11)" data-group="girdle"/>
+<polygon id="f12" class="facet-poly" points="180,120 220,80 220,120" fill="#121212" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(12)" data-group="girdle"/>
+<polygon id="f13" class="facet-poly" points="220,120 220,80 260,120" fill="#0f0f0f" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(13)" data-group="girdle"/>
+<polygon id="f14" class="facet-poly" points="260,120 220,80 280,100" fill="#121212" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(14)" data-group="girdle"/>
+
+<!-- Girdle line -->
+<line x1="60" y1="130" x2="300" y2="130" stroke="#00ff8855" stroke-width="1"/>
+
+<!-- Pavilion facets -->
+<polygon id="f15" class="facet-poly" points="60,130 120,130 100,180" fill="#0d0d0d" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(15)" data-group="pavillon"/>
+<polygon id="f16" class="facet-poly" points="100,180 120,130 150,130" fill="#0a0a0a" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(16)" data-group="pavillon"/>
+<polygon id="f17" class="facet-poly" points="100,180 150,130 180,350" fill="#080808" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(17)" data-group="pavillon"/>
+<polygon id="f18" class="facet-poly" points="150,130 210,130 180,350" fill="#0a0a0a" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(18)" data-group="pavillon"/>
+<polygon id="f19" class="facet-poly" points="210,130 240,130 260,180" fill="#0a0a0a" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(19)" data-group="pavillon"/>
+<polygon id="f20" class="facet-poly" points="260,180 240,130 300,130" fill="#0d0d0d" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(20)" data-group="pavillon"/>
+<polygon id="f21" class="facet-poly" points="260,180 210,130 180,350" fill="#080808" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(21)" data-group="pavillon"/>
+
+<!-- Refracted light lines (hidden initially) -->
+<line id="refr-uv" x1="280" y1="90" x2="360" y2="70" stroke="#9933ff" stroke-width="1.5" opacity="0"/>
+<line id="refr-vi" x1="280" y1="90" x2="360" y2="80" stroke="#cc66ff" stroke-width="1.5" opacity="0"/>
+<line id="refr-bl" x1="280" y1="90" x2="360" y2="90" stroke="#00ccff" stroke-width="1.5" opacity="0"/>
+<line id="refr-gr" x1="280" y1="90" x2="360" y2="100" stroke="#00ff88" stroke-width="1.5" opacity="0"/>
+<line id="refr-rd" x1="280" y1="90" x2="360" y2="110" stroke="#ff4444" stroke-width="1.5" opacity="0"/>
+
+<!-- Labels -->
+<text id="laser-label" x="5" y="0" fill="#00ff88" font-size="10" opacity="0">LASER →</text>
+<text id="lens-label" x="310" y="85" fill="#666" font-size="9" opacity="0">→ LENS</text>
+<text x="180" y="375" fill="#00ff8844" font-size="9" text-anchor="middle">Click a facet to select it</text>
 </svg>
+</div>
+
 <!-- Sensor bars -->
-<div id="sensor-panel" style="display:none;margin-top:8px">
-<div style="display:flex;gap:4px">
-<div style="flex:1;background:#0F0A1A;border-radius:3px;padding:4px;text-align:center">
-<div style="font-size:10px;color:#EF4444;font-family:monospace">R: <span id="sr">0</span></div>
-<div style="height:6px;background:#2A2040;border-radius:2px;margin-top:2px"><div id="bar-r" style="height:100%;width:0%;background:#EF4444;border-radius:2px;transition:width 0.5s"></div></div>
-</div>
-<div style="flex:1;background:#0F0A1A;border-radius:3px;padding:4px;text-align:center">
-<div style="font-size:10px;color:#00FF88;font-family:monospace">G: <span id="sg">0</span></div>
-<div style="height:6px;background:#2A2040;border-radius:2px;margin-top:2px"><div id="bar-g" style="height:100%;width:0%;background:#00FF88;border-radius:2px;transition:width 0.5s"></div></div>
-</div>
-<div style="flex:1;background:#0F0A1A;border-radius:3px;padding:4px;text-align:center">
-<div style="font-size:10px;color:#22D3EE;font-family:monospace">B: <span id="sb">0</span></div>
-<div style="height:6px;background:#2A2040;border-radius:2px;margin-top:2px"><div id="bar-b" style="height:100%;width:0%;background:#22D3EE;border-radius:2px;transition:width 0.5s"></div></div>
-</div>
-</div>
-</div>
+<div id="sensor-panel" style="border-top:1px dashed #00ff8833;padding-top:8px">
+<div style="font-size:11px;color:#00ff8888;margin-bottom:4px">SENSOR READOUT</div>
+<div class="sensor-bar"><span class="lbl" style="color:#9933ff">UV 350</span><div class="bar"><div id="bar-uv" style="width:0%;background:#9933ff"></div></div><span class="val" id="sv-uv">—</span></div>
+<div class="sensor-bar"><span class="lbl" style="color:#cc66ff">Vio 405</span><div class="bar"><div id="bar-vi" style="width:0%;background:#cc66ff"></div></div><span class="val" id="sv-vi">—</span></div>
+<div class="sensor-bar"><span class="lbl" style="color:#00ccff">Blå 473</span><div class="bar"><div id="bar-bl" style="width:0%;background:#00ccff"></div></div><span class="val" id="sv-bl">—</span></div>
+<div class="sensor-bar"><span class="lbl" style="color:#00ff88">Grøn 532</span><div class="bar"><div id="bar-gr" style="width:0%;background:#00ff88"></div></div><span class="val" id="sv-gr">—</span></div>
+<div class="sensor-bar"><span class="lbl" style="color:#ff4444">Rød 650</span><div class="bar"><div id="bar-rd" style="width:0%;background:#ff4444"></div></div><span class="val" id="sv-rd">—</span></div>
 </div>
 </div>
 
-<!-- Stats -->
-<div class="panel">
-<div class="panel-head"><span>Status</span></div>
-<div class="panel-body">
-<div class="stat-row">
-<div class="stat"><div class="n" id="st-facets">0</div><div class="l">facets used</div></div>
-<div class="stat"><div class="n" id="st-blocks">0</div><div class="l">chain blocks</div></div>
-<div class="stat"><div class="n" id="st-wallets">0</div><div class="l">wallets</div></div>
-<div class="stat"><div class="n" id="st-valid">—</div><div class="l">chain valid</div></div>
-</div>
-</div>
-</div>
-</div>
+<!-- RIGHT: Blockchain + Output -->
+<div class="col">
+<div style="font-size:11px;color:#00ff8888;margin-bottom:4px">BLOCKCHAIN LEDGER</div>
+<div id="chain-panel" style="max-height:200px;overflow-y:auto">
+<div style="color:#333;font-size:11px">No entries yet</div>
 </div>
 
-<!-- Output -->
-<div class="panel">
-<div class="panel-head"><span>Output</span><span id="run-time"></span></div>
-<div class="panel-body">
-<div class="output" id="output">Click ▶ Run to execute the program.</div>
-</div>
+<div class="stat-row" id="stats">
+<div class="stat"><div class="n" id="st-f">0</div><div class="l">Facets</div></div>
+<div class="stat"><div class="n" id="st-b">0</div><div class="l">Blocks</div></div>
+<div class="stat"><div class="n" id="st-w">0</div><div class="l">Wallets</div></div>
 </div>
 
-<!-- Blockchain -->
-<div class="panel">
-<div class="panel-head"><span>Blockchain Ledger</span></div>
-<div class="panel-body" id="chain-panel">
-<div style="color:#6B7280;font-size:12px">Run a program to see blockchain entries.</div>
+<div style="font-size:11px;color:#00ff8888;margin:8px 0 4px">OUTPUT</div>
+<div class="output" id="output">> System initialiseret...
+> 5 laserkanaler klar
+> 57 facetter tilgængelige
+> Blockchain genesis blok oprettet</div>
 </div>
 </div>
 
 <div class="links">
-<a href="https://github.com/Janus5G/chromaplex-os-v2">GitHub</a>
+<a href="https://github.com/Janus5G/chromaplex-os-v2">GitHub v2</a>
 <a href="https://chromaplex-wallet-sgm.caffeine.xyz/">Live Wallet</a>
 <a href="https://github.com/Janus5G/chromaplex-os">v1 Original</a>
 <a href="https://github.com/Janus5G/Cplex">Desktop IDE</a>
 </div>
-</div>
 
 <script>
-// Simulated ChromaPlex VM in JavaScript
-class CrystalSim {
-  constructor() {
-    this.data = {};
-    this.chain = [];
-    this.wallets = [];
-    this.locked = new Set();
-    this.output = [];
+const COLOURS = {uv:{nm:350,hex:'#9933ff',ri:1.4760},violet:{nm:405,hex:'#cc66ff',ri:1.4701},blå:{nm:473,hex:'#00ccff',ri:1.4650},grøn:{nm:532,hex:'#00ff88',ri:1.4613},rød:{nm:650,hex:'#ff4444',ri:1.4580}};
+const GROUPS = {0:'Bord',1:'Krone',2:'Krone',3:'Krone',4:'Krone',5:'Krone',6:'Krone',7:'Krone',8:'Krone',9:'Ø.Bælte',10:'Ø.Bælte',11:'Ø.Bælte',12:'Ø.Bælte',13:'Ø.Bælte',14:'Ø.Bælte',15:'Pavillon',16:'Pavillon',17:'Pavillon',18:'Pavillon',19:'Pavillon',20:'Pavillon',21:'Pavillon'};
+
+class Sim {
+  constructor(){this.data={};this.chain=[];this.wallets=[];this.locked=new Set()}
+  _k(f,c){return`C0:F${f}:${c}:D0`}
+  _h(s){let h=0;for(let i=0;i<s.length;i++)h=((h<<5)-h+s.charCodeAt(i))|0;return Math.abs(h).toString(16).padStart(8,'0')+Math.abs(h*31+7).toString(16).padStart(8,'0')}
+  _enc(v,b){if(v<=0)return[0,0,b];let e=0;while(Math.pow(b,e+1)<=v)e++;return[e,v-Math.pow(b,e),b]}
+  store(f,col,val,base){
+    const k=this._k(f,col);
+    if(this.locked.has(k))throw new Error(`${k} LÅST`);
+    const[e,r,b]=this._enc(val,base);
+    this.data[k]={e,r,b,value:val};
+    const prev=this.chain.length?this.chain[this.chain.length-1].hash:'0'.repeat(16);
+    const hash=this._h(`${this.chain.length}:${k}:WRITE:${prev}`);
+    this.chain.push({op:'WRITE',addr:k,hash,prev,base:b});
+    this.locked.add(k);
+    return{addr:k,e,r,b};
   }
-  _key(c,f,col,d) { return `C${c}:F${f}:${col}:D${d}`; }
-  _hash(s) {
-    let h = 0;
-    for (let i = 0; i < s.length; i++) {
-      h = ((h << 5) - h + s.charCodeAt(i)) | 0;
-    }
-    return Math.abs(h).toString(16).padStart(8,'0') + Math.abs(h*31).toString(16).padStart(8,'0');
+  load(f,col){const k=this._k(f,col);return this.data[k]?this.data[k]:null}
+  lensCapture(f){
+    const res={};
+    for(const[k,v]of Object.entries(this.data)){
+      if(k.startsWith(`C0:F${f}:`)){const c=k.split(':')[2];res[c]=v}}
+    return res;
   }
-  _encodeRaw(val, base) {
-    if (val <= 0) return [0,0,base];
-    let e = 0;
-    while (Math.pow(base, e+1) <= val) e++;
-    return [e, val - Math.pow(base, e), base];
-  }
-  store(crystal, facet, colour, value, base=2) {
-    const key = this._key(crystal, facet, colour, 0);
-    if (this.locked.has(key)) throw new Error(`Position ${key} is locked`);
-    const [e, r, b] = this._encodeRaw(value, base);
-    this.data[key] = {e, r, b, value};
-    const prevHash = this.chain.length ? this.chain[this.chain.length-1].hash : '0'.repeat(16);
-    const hash = this._hash(`${this.chain.length}:${key}:WRITE:${prevHash}`);
-    this.chain.push({op:'WRITE', addr:key, hash, prev:prevHash, base:b});
-    this.locked.add(key);
-    return key;
-  }
-  load(crystal, facet, colour) {
-    const key = this._key(crystal, facet, colour, 0);
-    return this.data[key] ? this.data[key].value : 0;
-  }
-  lensCapture(crystal, facet) {
-    const results = {};
-    for (const [key, val] of Object.entries(this.data)) {
-      if (key.startsWith(`C${crystal}:F${facet}:`)) {
-        const col = key.split(':')[2];
-        results[col] = val;
+  lensToChain(){
+    let n=0;
+    for(const[k,v]of Object.entries(this.data)){
+      if(!this.chain.some(e=>e.op==='EXTRACT'&&e.addr===k)){
+        const prev=this.chain.length?this.chain[this.chain.length-1].hash:'0'.repeat(16);
+        const hash=this._h(`${this.chain.length}:${k}:EXTRACT:${prev}`);
+        this.chain.push({op:'EXTRACT',addr:k,hash,prev,base:v.b});
+        this.wallets.push({id:hash.slice(0,16),addr:k,value:v.value,b:v.b,e:v.e,r:v.r});
+        n++;
       }
     }
-    return results;
+    return n;
   }
-  lensToChain() {
-    let count = 0;
-    for (const [key, val] of Object.entries(this.data)) {
-      const prevHash = this.chain.length ? this.chain[this.chain.length-1].hash : '0'.repeat(16);
-      const hash = this._hash(`${this.chain.length}:${key}:EXTRACT:${prevHash}`);
-      // Only extract if not already extracted
-      const alreadyExtracted = this.chain.some(e => e.op === 'EXTRACT' && e.addr === key);
-      if (!alreadyExtracted) {
-        this.chain.push({op:'EXTRACT', addr:key, hash, prev:prevHash, base:val.b});
-        this.wallets.push({id:hash.slice(0,16), addr:key, value:val.value, base:val.b, e:val.e, r:val.r});
-        count++;
-      }
-    }
-    return count;
-  }
-  chainValid() {
-    if (this.chain.length === 0) return true;
-    if (this.chain[0].prev !== '0'.repeat(16)) return false;
-    for (let i = 1; i < this.chain.length; i++) {
-      if (this.chain[i].prev !== this.chain[i-1].hash) return false;
-    }
-    return true;
-  }
+  valid(){if(!this.chain.length)return true;if(this.chain[0].prev!=='0'.repeat(16))return false;for(let i=1;i<this.chain.length;i++)if(this.chain[i].prev!==this.chain[i-1].hash)return false;return true}
+  facetsUsed(){return new Set(Object.keys(this.data).map(k=>parseInt(k.split(':')[1].slice(1)))).size}
 }
 
-function runProgram() {
-  const code = document.getElementById('code').value;
-  const sim = new CrystalSim();
-  const out = [];
-  const t0 = performance.now();
-  let capturedColours = null;
+const sim=new Sim();
+let activeFacet=5;
 
-  try {
-    const lines = code.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('//'));
-    for (const line of lines) {
-      if (line.startsWith('var ')) {
-        // var name = value;
-        const m = line.match(/var\s+(\w+)\s*=\s*(\d+)/);
-        if (m) sim['_var_'+m[1]] = parseInt(m[2]);
-      } else if (line.startsWith('store ')) {
-        const m = line.match(/store\s+(\w+)\s+at\s+facet\((\d+),\s*(\d+)\)\s+colour\s+(\w+)/);
-        if (m) {
-          const val = sim['_var_'+m[1]] || parseInt(m[1]);
-          const addr = sim.store(parseInt(m[2]), parseInt(m[3]), m[4].toLowerCase(), val, 3);
-          const d = sim.data[addr];
-          out.push(`[facet]  WRITE ${addr} — ${d.b}^${d.e} + ${d.r} = ${d.value}`);
-        }
-      } else if (line.startsWith('lens_capture')) {
-        const m = line.match(/lens_capture\s+facet\((\d+),\s*(\d+)\)/);
-        if (m) {
-          capturedColours = sim.lensCapture(parseInt(m[1]), parseInt(m[2]));
-          const cols = Object.entries(capturedColours).map(([c,v]) => `${c}:${v.value}`).join(' ');
-          out.push(`[lens]   Capture facet #${m[2]} → ${cols}`);
-        }
-      } else if (line.startsWith('lens_to_chain')) {
-        const count = sim.lensToChain();
-        out.push(`[chain]  ${count} payload(s) → blockchain — ${sim.chainValid() ? 'verified ✓' : 'INVALID ✗'}`);
-      } else if (line.startsWith('load ')) {
-        const m = line.match(/load\s+(\w+)\s+from\s+facet\((\d+),\s*(\d+)\)\s+colour\s+(\w+)/);
-        if (m) {
-          const val = sim.load(parseInt(m[2]), parseInt(m[3]), m[4].toLowerCase());
-          sim['_var_'+m[1]] = val;
-        }
-      } else if (line.startsWith('print ')) {
-        const m = line.match(/print\s+(\w+)/);
-        if (m) {
-          const val = sim['_var_'+m[1]];
-          out.push(`[print]  ${val}`);
-        }
-      }
-    }
-  } catch(e) {
-    out.push(`[ERROR]  ${e.message}`);
-  }
+function updateFacetLabel(){
+  const f=parseInt(document.getElementById('facet-slider').value);
+  activeFacet=f;
+  const g=GROUPS[f]||(f<17?'Ø.Bælte':'Pavillon');
+  document.getElementById('facet-val').textContent=`Facet #${f} (${g})`;
+  highlightFacet(f);
+}
 
-  const elapsed = ((performance.now() - t0) / 1000).toFixed(4);
+function clickFacet(f){
+  activeFacet=f;
+  document.getElementById('facet-slider').value=f;
+  updateFacetLabel();
+}
 
-  // Update output
-  document.getElementById('output').textContent = out.join('\n');
-  document.getElementById('run-time').textContent = `${elapsed}s`;
+function highlightFacet(f){
+  document.querySelectorAll('.facet-poly').forEach(p=>{
+    p.setAttribute('fill',p.id===`f${f}`?getColourHex()+'33':'#111');
+    p.setAttribute('stroke',p.id===`f${f}`?getColourHex():'#00ff8833');
+    p.setAttribute('stroke-width',p.id===`f${f}`?'2':'0.5');
+  });
+}
 
-  // Update crystal visualization
-  const facet5 = document.getElementById('facet5');
-  facet5.setAttribute('fill', '#00FF8840');
-  facet5.setAttribute('stroke', '#00FF88');
-  facet5.setAttribute('stroke-width', '1.5');
-  document.getElementById('active-facet').textContent = 'Facet #5 active';
-  document.getElementById('laser-beam').setAttribute('x2', '95');
-  document.getElementById('laser-beam').setAttribute('opacity', '1');
-  document.getElementById('laser-label').setAttribute('opacity', '1');
-  ['refr-r','refr-g','refr-b'].forEach(id => document.getElementById(id).setAttribute('opacity','0.7'));
+function getColour(){return document.getElementById('colour-select').value}
+function getColourHex(){return COLOURS[getColour()].hex}
+function getBase(){return parseInt(document.getElementById('base-select').value)}
+function getValue(){return parseInt(document.getElementById('value-input').value)||0}
+
+function log(msg){
+  const o=document.getElementById('output');
+  o.textContent+= '\n> '+msg;
+  o.scrollTop=o.scrollHeight;
+}
+
+function showLaser(f){
+  const el=document.getElementById(`f${Math.min(f,21)}`);
+  if(!el)return;
+  const pts=el.getAttribute('points').split(' ');
+  const xs=pts.map(p=>parseFloat(p.split(',')[0]));
+  const ys=pts.map(p=>parseFloat(p.split(',')[1]));
+  const cx=xs.reduce((a,b)=>a+b)/xs.length;
+  const cy=ys.reduce((a,b)=>a+b)/ys.length;
+  const ll=document.getElementById('laser-line');
+  ll.setAttribute('x1','0');ll.setAttribute('y1',String(cy));
+  ll.setAttribute('x2',String(cx));ll.setAttribute('y2',String(cy));
+  ll.setAttribute('stroke',getColourHex());ll.setAttribute('opacity','1');
+  document.getElementById('laser-label').setAttribute('y',String(cy-8));
+  document.getElementById('laser-label').setAttribute('opacity','1');
+  // Show refracted light
+  ['uv','vi','bl','gr','rd'].forEach(id=>{
+    document.getElementById('refr-'+id).setAttribute('opacity','0.7');
+    const ry=cy-20+['uv','vi','bl','gr','rd'].indexOf(id)*10;
+    document.getElementById('refr-'+id).setAttribute('y1',String(cy));
+    document.getElementById('refr-'+id).setAttribute('y2',String(ry));
+    document.getElementById('refr-'+id).setAttribute('x1',String(cx+40));
+  });
   document.getElementById('lens-label').setAttribute('opacity','1');
+  document.getElementById('lens-label').setAttribute('y',String(cy-5));
+}
 
-  // Sensor
-  const sp = document.getElementById('sensor-panel');
-  sp.style.display = 'block';
-  const r=89, g=199, b=133;
-  document.getElementById('sr').textContent = r;
-  document.getElementById('sg').textContent = g;
-  document.getElementById('sb').textContent = b;
-  document.getElementById('bar-r').style.width = (r/255*100)+'%';
-  document.getElementById('bar-g').style.width = (g/255*100)+'%';
-  document.getElementById('bar-b').style.width = (b/255*100)+'%';
-
-  // Stats
-  document.getElementById('st-facets').textContent = Object.keys(sim.data).length;
-  document.getElementById('st-blocks').textContent = sim.chain.length;
-  document.getElementById('st-wallets').textContent = sim.wallets.length;
-  document.getElementById('st-valid').textContent = sim.chainValid() ? '✓' : '✗';
-  document.getElementById('st-valid').style.color = sim.chainValid() ? '#00FF88' : '#EF4444';
-
-  // Chain
-  const cp = document.getElementById('chain-panel');
-  cp.innerHTML = '';
-  for (const entry of sim.chain) {
-    const tag = entry.op === 'WRITE' ? 'tag-write' : 'tag-extract';
-    const div = document.createElement('div');
-    div.className = 'chain-entry';
-    div.innerHTML = `<span><span class="tag ${tag}">${entry.op}</span> ${entry.addr}</span><span style="color:#4B4560">${entry.hash.slice(0,12)}…</span>`;
-    cp.appendChild(div);
-  }
-  for (const w of sim.wallets) {
-    const div = document.createElement('div');
-    div.className = 'chain-entry';
-    div.innerHTML = `<span><span class="tag tag-wallet">WALLET</span> ${w.addr} → ${w.value.toLocaleString()}</span><span style="color:#00FF88">✓ verified</span>`;
-    cp.appendChild(div);
+function updateSensor(channels){
+  const map={uv:'uv',violet:'vi',blå:'bl',grøn:'gr',rød:'rd'};
+  // Reset all
+  Object.values(map).forEach(id=>{
+    document.getElementById('bar-'+id).style.width='0%';
+    document.getElementById('sv-'+id).textContent='—';
+  });
+  for(const[col,v]of Object.entries(channels)){
+    const id=map[col];
+    if(!id)continue;
+    const pct=Math.min(100,v.value/getValue()*80+20);
+    document.getElementById('bar-'+id).style.width=pct+'%';
+    document.getElementById('sv-'+id).textContent=v.value.toLocaleString();
   }
 }
+
+function updateChain(){
+  const cp=document.getElementById('chain-panel');
+  cp.innerHTML='';
+  for(const e of sim.chain){
+    const cls=e.op==='WRITE'?'t-w':'t-e';
+    cp.innerHTML+=`<div class="chain-entry"><span><span class="tag ${cls}">${e.op}</span> ${e.addr}</span><span style="color:#333">${e.hash.slice(0,10)}…</span></div>`;
+  }
+  for(const w of sim.wallets){
+    cp.innerHTML+=`<div class="chain-entry"><span><span class="tag t-wallet">WALLET</span> ${w.value.toLocaleString()}</span><span style="color:#00ff88">✓</span></div>`;
+  }
+  document.getElementById('st-f').textContent=sim.facetsUsed();
+  document.getElementById('st-b').textContent=sim.chain.length;
+  document.getElementById('st-w').textContent=sim.wallets.length;
+}
+
+function doStore(){
+  const f=activeFacet, col=getColour(), val=getValue(), base=getBase();
+  try{
+    const res=sim.store(f,col,val,base);
+    highlightFacet(f);
+    showLaser(f);
+    log(`WRITE ${res.addr} — ${res.b}^${res.e} + ${res.r} = ${val}`);
+    updateChain();
+  }catch(e){log(`FEJL: ${e.message}`)}
+}
+
+function doLoad(){
+  const f=activeFacet, col=getColour();
+  const d=sim.load(f,col);
+  highlightFacet(f);
+  showLaser(f);
+  const rd=document.getElementById('read-display');
+  if(d){
+    rd.style.display='block';
+    document.getElementById('read-value').textContent=d.value.toLocaleString();
+    document.getElementById('read-repr').textContent=`${d.b}^${d.e} + ${d.r}`;
+    log(`LOAD C0:F${f}:${col}:D0 = ${d.value}`);
+  }else{
+    rd.style.display='block';
+    document.getElementById('read-value').textContent='(tom)';
+    document.getElementById('read-repr').textContent='Ingen data på denne position';
+    log(`LOAD C0:F${f}:${col}:D0 = (ingen data)`);
+  }
+}
+
+function doLensCapture(){
+  const f=activeFacet;
+  const channels=sim.lensCapture(f);
+  highlightFacet(f);
+  showLaser(f);
+  updateSensor(channels);
+  const cols=Object.entries(channels).map(([c,v])=>`${c}:${v.value}`).join(' ');
+  log(`LENS facet #${f} → ${cols||'(ingen data)'}`);
+}
+
+function doLensToChain(){
+  const n=sim.lensToChain();
+  log(`LENS→CHAIN: ${n} payload(s) → blockchain${sim.valid()?' ✓':' ✗'}`);
+  updateChain();
+}
+
+function switchTab(t){
+  document.getElementById('tab-cpl').className='tab'+(t==='cpl'?' active':'');
+  document.getElementById('tab-py').className='tab'+(t==='py'?' active':'');
+  document.getElementById('code-cpl').style.display=t==='cpl'?'block':'none';
+  document.getElementById('code-py').style.display=t==='py'?'block':'none';
+}
+
+function runCode(){
+  const isCpl=document.getElementById('code-cpl').style.display!=='none';
+  const code=isCpl?document.getElementById('code-cpl').value:document.getElementById('code-py').value;
+  log(`[${isCpl?'CPL':'Python'}] Kører program...`);
+  const lines=code.split('\n').map(l=>l.trim()).filter(l=>l&&!l.startsWith('//')&&!l.startsWith('#'));
+  for(const line of lines){
+    try{
+      if(isCpl){
+        if(line.startsWith('var ')){const m=line.match(/var\s+(\w+)\s*=\s*(\d+)/);if(m)window['_v_'+m[1]]=parseInt(m[2])}
+        else if(line.startsWith('store ')){const m=line.match(/store\s+(\w+)\s+at\s+facet\((\d+),\s*(\d+)\)\s+colour\s+(\w+)/i);if(m){const val=window['_v_'+m[1]]||parseInt(m[1]);const col=m[4].toLowerCase()==='green'?'grøn':m[4].toLowerCase()==='red'?'rød':m[4].toLowerCase()==='blue'?'blå':m[4].toLowerCase();const f=parseInt(m[3]);activeFacet=f;document.getElementById('facet-slider').value=f;const cs=document.getElementById('colour-select');for(let i=0;i<cs.options.length;i++)if(cs.options[i].value===col)cs.selectedIndex=i;doStore()}}
+        else if(line.startsWith('lens_capture')){const m=line.match(/lens_capture\s+facet\((\d+),\s*(\d+)\)/);if(m){activeFacet=parseInt(m[2]);doLensCapture()}}
+        else if(line.startsWith('lens_to_chain')){doLensToChain()}
+        else if(line.startsWith('load ')){const m=line.match(/load\s+(\w+)\s+from\s+facet\((\d+),\s*(\d+)\)\s+colour\s+(\w+)/i);if(m){activeFacet=parseInt(m[3]);const col=m[4].toLowerCase()==='green'?'grøn':m[4].toLowerCase()==='red'?'rød':m[4].toLowerCase()==='blue'?'blå':m[4].toLowerCase();const cs=document.getElementById('colour-select');for(let i=0;i<cs.options.length;i++)if(cs.options[i].value===col)cs.selectedIndex=i;doLoad()}}
+        else if(line.startsWith('print ')){const m=line.match(/print\s+(\w+)/);if(m)log(`[print] ${window['_v_'+m[1]]||'?'}`)}
+      }else{
+        // Python-style
+        if(line.includes('cx.store(')){const m=line.match(/facet=(\d+).*colour="(\w+)".*value=(\d+)(?:.*base=(\d+))?/);if(m){activeFacet=parseInt(m[1]);const col=m[2].toLowerCase()==='green'?'grøn':m[2].toLowerCase()==='red'?'rød':m[2].toLowerCase()==='blue'?'blå':m[2].toLowerCase();document.getElementById('facet-slider').value=activeFacet;const cs=document.getElementById('colour-select');for(let i=0;i<cs.options.length;i++)if(cs.options[i].value===col)cs.selectedIndex=i;document.getElementById('value-input').value=m[3];if(m[4])document.getElementById('base-select').value=m[4];doStore()}}
+        else if(line.includes('cx.lens_capture(')){const m=line.match(/facet=(\d+)/);if(m){activeFacet=parseInt(m[1]);doLensCapture()}}
+        else if(line.includes('cx.lens_to_chain')){doLensToChain()}
+        else if(line.includes('cx.load(')){const m=line.match(/facet=(\d+).*colour="(\w+)"/);if(m){activeFacet=parseInt(m[1]);const col=m[2].toLowerCase()==='green'?'grøn':m[2].toLowerCase()==='red'?'rød':m[2].toLowerCase()==='blue'?'blå':m[2].toLowerCase();const cs=document.getElementById('colour-select');for(let i=0;i<cs.options.length;i++)if(cs.options[i].value===col)cs.selectedIndex=i;doLoad()}}
+        else if(line.includes('print(')){const m=line.match(/print\((\w+)\)/);if(m)log(`[print] ${window['_v_'+m[1]]||sim.load(activeFacet,getColour())?.value||'?'}`)}
+      }
+    }catch(e){log(`FEJL: ${e.message}`)}
+  }
+  log(`Program afsluttet ✓`);
+}
+
+// Init
+updateFacetLabel();
+document.getElementById('colour-select').onchange=()=>highlightFacet(activeFacet);
 </script>
 </body>
 </html>
