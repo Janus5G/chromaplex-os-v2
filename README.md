@@ -4,7 +4,7 @@ A programming language and software stack for optical crystal data storage.
 Store data as light refracted through a 57-facet brilliant-cut crystal,
 read it passively with a lens, and send it to a blockchain wallet.
 
-**[Live Blockchain Wallet](https://chromaplex-wallet-sgm.caffeine.xyz/)** · **[Original v1](https://github.com/Janus5G/chromaplex-os)** · **[Desktop IDE](https://github.com/Janus5G/Cplex)** · **[Compiler](https://github.com/Janus5G/chromaplex-os-compiler)**
+**[Live Demo](https://janus5g.github.io/chromaplex-os-v2/demo/)** · **[Live Blockchain Wallet](https://chromaplex-wallet-sgm.caffeine.xyz/)** · **[Original v1](https://github.com/Janus5G/chromaplex-os)** · **[Desktop IDE](https://github.com/Janus5G/Cplex)** · **[Compiler](https://github.com/Janus5G/chromaplex-os-compiler)**
 
 ---
 
@@ -30,7 +30,7 @@ git clone https://github.com/Janus5G/chromaplex-os-v2.git
 cd chromaplex-os-v2
 pip install -e .
 pip install pytest
-python -m pytest tests/ -v        # 27 tests pass
+python -m pytest tests/ -v        # 72 tests pass
 python examples/python_demo.py    # Full pipeline demo
 ```
 
@@ -188,14 +188,11 @@ All v1 opcodes (0x00–0x14) remain fully compatible.
 
 ```
 $ python -m pytest tests/ -v
-tests/test_assembler.py::test_mov_immediate          PASSED
-tests/test_assembler.py::test_store_load              PASSED
-tests/test_v2_integration.py::TestV1Legacy            PASSED (4 tests)
-tests/test_v2_integration.py::TestBaseN               PASSED (3 tests)
-tests/test_v2_integration.py::TestFacetBytecode       PASSED (4 tests)
-tests/test_v2_integration.py::TestLensBytecode        PASSED (3 tests)
-tests/test_python_api.py::TestPythonAPI               PASSED (11 tests)
-============================== 27 passed ==============================
+tests/test_assembler.py            2 passed   (v1 bytecode)
+tests/test_python_api.py          11 passed   (Python API)
+tests/test_v2_core.py             38 passed   (facets, blockchain, lens, base-N)
+tests/test_v2_integration.py      21 passed   (bytecode VM integration)
+============================== 72 passed ==============================
 ```
 
 ---

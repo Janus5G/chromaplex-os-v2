@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChromaPlex v2 — Interactive Demo</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0F0A1A;color:#E0E0E0;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+.header{text-align:center;padding:24px 16px 12px}
+.header h1{font-size:32px;font-weight:700;color:#fff}.header h1 span{color:#00FF88}
+.header p{color:#9CA3AF;font-size:14px;margin-top:4px}
+.main{max-width:960px;margin:0 auto;padding:0 16px 40px}
+.panel{background:#1A1230;border-radius:8px;margin-bottom:16px;overflow:hidden;border:1px solid #2A2040}
+.panel-head{background:#252040;padding:8px 14px;font-size:13px;font-weight:600;color:#9CA3AF;display:flex;justify-content:space-between;align-items:center}
+.panel-body{padding:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:700px){.row{grid-template-columns:1fr}}
+textarea{width:100%;background:#0F0A1A;color:#A9B7C6;border:1px solid #2A2040;border-radius:4px;padding:10px;font-family:'Consolas','Courier New',monospace;font-size:13px;line-height:1.6;resize:vertical}
+button.run{background:#00FF88;color:#0F0A1A;border:none;padding:6px 18px;border-radius:4px;font-size:13px;font-weight:600;cursor:pointer}
+button.run:hover{background:#00DD77}
+.output{background:#0F0A1A;border:1px solid #2A2040;border-radius:4px;padding:10px;font-family:monospace;font-size:12px;line-height:1.6;min-height:120px;white-space:pre-wrap;color:#A9B7C6}
+.crystal-svg{text-align:center;padding:8px}
+.stat-row{display:flex;gap:8px;flex-wrap:wrap}
+.stat{background:#0F0A1A;border-radius:4px;padding:8px 14px;flex:1;min-width:80px;text-align:center}
+.stat .n{font-size:22px;font-weight:700;color:#00FF88}
+.stat .l{font-size:10px;color:#9CA3AF}
+.chain-entry{background:#0F0A1A;border-radius:4px;padding:6px 10px;margin-bottom:4px;font-family:monospace;font-size:11px;display:flex;justify-content:space-between}
+.tag{display:inline-block;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600}
+.tag-write{background:#F59E0B;color:#0F0A1A}
+.tag-extract{background:#22D3EE;color:#0F0A1A}
+.tag-wallet{background:#00FF88;color:#0F0A1A}
+a{color:#22D3EE;text-decoration:none}
+a:hover{text-decoration:underline}
+.links{text-align:center;padding:20px;font-size:13px;color:#6B7280}
+.links a{margin:0 12px}
+#facet5{transition:fill 0.3s}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>Chroma<span>Plex</span> v2 — Interactive Demo</h1>
+<p>57-facet crystal storage with blockchain and lens readout</p>
+</div>
+<div class="main">
+
+<div class="row">
+<!-- Code editor -->
+<div class="panel">
+<div class="panel-head">
+<span>CPL Program</span>
+<button class="run" onclick="runProgram()">▶ Run</button>
+</div>
+<div class="panel-body">
+<textarea id="code" rows="14">// ChromaPlex v2 demo
+var data = 1234567;
+
+// Store in crystal facet 5
+store data at facet(0, 5) colour GREEN;
+
+// Lens reads passively
+lens_capture facet(0, 5);
+
+// Send to blockchain
+lens_to_chain;
+
+// Read back
+load result from facet(0, 5) colour GREEN;
+print result;</textarea>
+</div>
+</div>
+
+<!-- Crystal + Sensor -->
+<div>
+<div class="panel">
+<div class="panel-head"><span>Crystal — 57 Facets</span><span id="active-facet">—</span></div>
+<div class="panel-body crystal-svg">
+<svg viewBox="0 0 240 220" width="220" id="crystal-svg">
+<polygon points="120,8 80,65 160,65" fill="#1A1230" stroke="#7C3AED" stroke-width="1"/>
+<polygon points="80,65 45,65 65,8" fill="#1A1230" stroke="#534AB7" stroke-width="0.5"/>
+<polygon points="160,65 195,65 175,8" fill="#1A1230" stroke="#534AB7" stroke-width="0.5"/>
+<polygon points="65,8 120,8 80,65" fill="#1E1445" stroke="#534AB7" stroke-width="0.5"/>
+<polygon points="175,8 120,8 160,65" fill="#1E1445" stroke="#534AB7" stroke-width="0.5"/>
+<polygon id="facet5" points="95,40 120,8 105,65" fill="#1A1230" stroke="#534AB7" stroke-width="0.5"/>
+<line x1="45" y1="65" x2="195" y2="65" stroke="#534AB7" stroke-width="1"/>
+<polygon points="45,65 120,200 80,65" fill="#0F1A2E" stroke="#534AB7" stroke-width="0.5"/>
+<polygon points="80,65 120,200 120,65" fill="#0F0A1A" stroke="#534AB7" stroke-width="0.5"/>
+<polygon points="120,65 120,200 160,65" fill="#0F1A2E" stroke="#534AB7" stroke-width="0.5"/>
+<polygon points="160,65 120,200 195,65" fill="#0F0A1A" stroke="#534AB7" stroke-width="0.5"/>
+<line id="laser-beam" x1="0" y1="40" x2="0" y2="40" stroke="#00FF88" stroke-width="2" stroke-dasharray="4,3" opacity="0"/>
+<line id="refr-r" x1="150" y1="50" x2="240" y2="72" stroke="#EF4444" stroke-width="1" opacity="0"/>
+<line id="refr-g" x1="150" y1="50" x2="240" y2="62" stroke="#00FF88" stroke-width="1" opacity="0"/>
+<line id="refr-b" x1="150" y1="50" x2="240" y2="52" stroke="#22D3EE" stroke-width="1" opacity="0"/>
+<text id="laser-label" x="3" y="34" fill="#00FF88" font-size="9" font-family="monospace" opacity="0">LASER →</text>
+<text id="lens-label" x="200" y="48" fill="#9CA3AF" font-size="8" font-family="monospace" opacity="0">→ LENS</text>
+</svg>
+<!-- Sensor bars -->
+<div id="sensor-panel" style="display:none;margin-top:8px">
+<div style="display:flex;gap:4px">
+<div style="flex:1;background:#0F0A1A;border-radius:3px;padding:4px;text-align:center">
+<div style="font-size:10px;color:#EF4444;font-family:monospace">R: <span id="sr">0</span></div>
+<div style="height:6px;background:#2A2040;border-radius:2px;margin-top:2px"><div id="bar-r" style="height:100%;width:0%;background:#EF4444;border-radius:2px;transition:width 0.5s"></div></div>
+</div>
+<div style="flex:1;background:#0F0A1A;border-radius:3px;padding:4px;text-align:center">
+<div style="font-size:10px;color:#00FF88;font-family:monospace">G: <span id="sg">0</span></div>
+<div style="height:6px;background:#2A2040;border-radius:2px;margin-top:2px"><div id="bar-g" style="height:100%;width:0%;background:#00FF88;border-radius:2px;transition:width 0.5s"></div></div>
+</div>
+<div style="flex:1;background:#0F0A1A;border-radius:3px;padding:4px;text-align:center">
+<div style="font-size:10px;color:#22D3EE;font-family:monospace">B: <span id="sb">0</span></div>
+<div style="height:6px;background:#2A2040;border-radius:2px;margin-top:2px"><div id="bar-b" style="height:100%;width:0%;background:#22D3EE;border-radius:2px;transition:width 0.5s"></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Stats -->
+<div class="panel">
+<div class="panel-head"><span>Status</span></div>
+<div class="panel-body">
+<div class="stat-row">
+<div class="stat"><div class="n" id="st-facets">0</div><div class="l">facets used</div></div>
+<div class="stat"><div class="n" id="st-blocks">0</div><div class="l">chain blocks</div></div>
+<div class="stat"><div class="n" id="st-wallets">0</div><div class="l">wallets</div></div>
+<div class="stat"><div class="n" id="st-valid">—</div><div class="l">chain valid</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Output -->
+<div class="panel">
+<div class="panel-head"><span>Output</span><span id="run-time"></span></div>
+<div class="panel-body">
+<div class="output" id="output">Click ▶ Run to execute the program.</div>
+</div>
+</div>
+
+<!-- Blockchain -->
+<div class="panel">
+<div class="panel-head"><span>Blockchain Ledger</span></div>
+<div class="panel-body" id="chain-panel">
+<div style="color:#6B7280;font-size:12px">Run a program to see blockchain entries.</div>
+</div>
+</div>
+
+<div class="links">
+<a href="https://github.com/Janus5G/chromaplex-os-v2">GitHub</a>
+<a href="https://chromaplex-wallet-sgm.caffeine.xyz/">Live Wallet</a>
+<a href="https://github.com/Janus5G/chromaplex-os">v1 Original</a>
+<a href="https://github.com/Janus5G/Cplex">Desktop IDE</a>
+</div>
+</div>
+
+<script>
+// Simulated ChromaPlex VM in JavaScript
+class CrystalSim {
+  constructor() {
+    this.data = {};
+    this.chain = [];
+    this.wallets = [];
+    this.locked = new Set();
+    this.output = [];
+  }
+  _key(c,f,col,d) { return `C${c}:F${f}:${col}:D${d}`; }
+  _hash(s) {
+    let h = 0;
+    for (let i = 0; i < s.length; i++) {
+      h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+    }
+    return Math.abs(h).toString(16).padStart(8,'0') + Math.abs(h*31).toString(16).padStart(8,'0');
+  }
+  _encodeRaw(val, base) {
+    if (val <= 0) return [0,0,base];
+    let e = 0;
+    while (Math.pow(base, e+1) <= val) e++;
+    return [e, val - Math.pow(base, e), base];
+  }
+  store(crystal, facet, colour, value, base=2) {
+    const key = this._key(crystal, facet, colour, 0);
+    if (this.locked.has(key)) throw new Error(`Position ${key} is locked`);
+    const [e, r, b] = this._encodeRaw(value, base);
+    this.data[key] = {e, r, b, value};
+    const prevHash = this.chain.length ? this.chain[this.chain.length-1].hash : '0'.repeat(16);
+    const hash = this._hash(`${this.chain.length}:${key}:WRITE:${prevHash}`);
+    this.chain.push({op:'WRITE', addr:key, hash, prev:prevHash, base:b});
+    this.locked.add(key);
+    return key;
+  }
+  load(crystal, facet, colour) {
+    const key = this._key(crystal, facet, colour, 0);
+    return this.data[key] ? this.data[key].value : 0;
+  }
+  lensCapture(crystal, facet) {
+    const results = {};
+    for (const [key, val] of Object.entries(this.data)) {
+      if (key.startsWith(`C${crystal}:F${facet}:`)) {
+        const col = key.split(':')[2];
+        results[col] = val;
+      }
+    }
+    return results;
+  }
+  lensToChain() {
+    let count = 0;
+    for (const [key, val] of Object.entries(this.data)) {
+      const prevHash = this.chain.length ? this.chain[this.chain.length-1].hash : '0'.repeat(16);
+      const hash = this._hash(`${this.chain.length}:${key}:EXTRACT:${prevHash}`);
+      // Only extract if not already extracted
+      const alreadyExtracted = this.chain.some(e => e.op === 'EXTRACT' && e.addr === key);
+      if (!alreadyExtracted) {
+        this.chain.push({op:'EXTRACT', addr:key, hash, prev:prevHash, base:val.b});
+        this.wallets.push({id:hash.slice(0,16), addr:key, value:val.value, base:val.b, e:val.e, r:val.r});
+        count++;
+      }
+    }
+    return count;
+  }
+  chainValid() {
+    if (this.chain.length === 0) return true;
+    if (this.chain[0].prev !== '0'.repeat(16)) return false;
+    for (let i = 1; i < this.chain.length; i++) {
+      if (this.chain[i].prev !== this.chain[i-1].hash) return false;
+    }
+    return true;
+  }
+}
+
+function runProgram() {
+  const code = document.getElementById('code').value;
+  const sim = new CrystalSim();
+  const out = [];
+  const t0 = performance.now();
+  let capturedColours = null;
+
+  try {
+    const lines = code.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('//'));
+    for (const line of lines) {
+      if (line.startsWith('var ')) {
+        // var name = value;
+        const m = line.match(/var\s+(\w+)\s*=\s*(\d+)/);
+        if (m) sim['_var_'+m[1]] = parseInt(m[2]);
+      } else if (line.startsWith('store ')) {
+        const m = line.match(/store\s+(\w+)\s+at\s+facet\((\d+),\s*(\d+)\)\s+colour\s+(\w+)/);
+        if (m) {
+          const val = sim['_var_'+m[1]] || parseInt(m[1]);
+          const addr = sim.store(parseInt(m[2]), parseInt(m[3]), m[4].toLowerCase(), val, 3);
+          const d = sim.data[addr];
+          out.push(`[facet]  WRITE ${addr} — ${d.b}^${d.e} + ${d.r} = ${d.value}`);
+        }
+      } else if (line.startsWith('lens_capture')) {
+        const m = line.match(/lens_capture\s+facet\((\d+),\s*(\d+)\)/);
+        if (m) {
+          capturedColours = sim.lensCapture(parseInt(m[1]), parseInt(m[2]));
+          const cols = Object.entries(capturedColours).map(([c,v]) => `${c}:${v.value}`).join(' ');
+          out.push(`[lens]   Capture facet #${m[2]} → ${cols}`);
+        }
+      } else if (line.startsWith('lens_to_chain')) {
+        const count = sim.lensToChain();
+        out.push(`[chain]  ${count} payload(s) → blockchain — ${sim.chainValid() ? 'verified ✓' : 'INVALID ✗'}`);
+      } else if (line.startsWith('load ')) {
+        const m = line.match(/load\s+(\w+)\s+from\s+facet\((\d+),\s*(\d+)\)\s+colour\s+(\w+)/);
+        if (m) {
+          const val = sim.load(parseInt(m[2]), parseInt(m[3]), m[4].toLowerCase());
+          sim['_var_'+m[1]] = val;
+        }
+      } else if (line.startsWith('print ')) {
+        const m = line.match(/print\s+(\w+)/);
+        if (m) {
+          const val = sim['_var_'+m[1]];
+          out.push(`[print]  ${val}`);
+        }
+      }
+    }
+  } catch(e) {
+    out.push(`[ERROR]  ${e.message}`);
+  }
+
+  const elapsed = ((performance.now() - t0) / 1000).toFixed(4);
+
+  // Update output
+  document.getElementById('output').textContent = out.join('\n');
+  document.getElementById('run-time').textContent = `${elapsed}s`;
+
+  // Update crystal visualization
+  const facet5 = document.getElementById('facet5');
+  facet5.setAttribute('fill', '#00FF8840');
+  facet5.setAttribute('stroke', '#00FF88');
+  facet5.setAttribute('stroke-width', '1.5');
+  document.getElementById('active-facet').textContent = 'Facet #5 active';
+  document.getElementById('laser-beam').setAttribute('x2', '95');
+  document.getElementById('laser-beam').setAttribute('opacity', '1');
+  document.getElementById('laser-label').setAttribute('opacity', '1');
+  ['refr-r','refr-g','refr-b'].forEach(id => document.getElementById(id).setAttribute('opacity','0.7'));
+  document.getElementById('lens-label').setAttribute('opacity','1');
+
+  // Sensor
+  const sp = document.getElementById('sensor-panel');
+  sp.style.display = 'block';
+  const r=89, g=199, b=133;
+  document.getElementById('sr').textContent = r;
+  document.getElementById('sg').textContent = g;
+  document.getElementById('sb').textContent = b;
+  document.getElementById('bar-r').style.width = (r/255*100)+'%';
+  document.getElementById('bar-g').style.width = (g/255*100)+'%';
+  document.getElementById('bar-b').style.width = (b/255*100)+'%';
+
+  // Stats
+  document.getElementById('st-facets').textContent = Object.keys(sim.data).length;
+  document.getElementById('st-blocks').textContent = sim.chain.length;
+  document.getElementById('st-wallets').textContent = sim.wallets.length;
+  document.getElementById('st-valid').textContent = sim.chainValid() ? '✓' : '✗';
+  document.getElementById('st-valid').style.color = sim.chainValid() ? '#00FF88' : '#EF4444';
+
+  // Chain
+  const cp = document.getElementById('chain-panel');
+  cp.innerHTML = '';
+  for (const entry of sim.chain) {
+    const tag = entry.op === 'WRITE' ? 'tag-write' : 'tag-extract';
+    const div = document.createElement('div');
+    div.className = 'chain-entry';
+    div.innerHTML = `<span><span class="tag ${tag}">${entry.op}</span> ${entry.addr}</span><span style="color:#4B4560">${entry.hash.slice(0,12)}…</span>`;
+    cp.appendChild(div);
+  }
+  for (const w of sim.wallets) {
+    const div = document.createElement('div');
+    div.className = 'chain-entry';
+    div.innerHTML = `<span><span class="tag tag-wallet">WALLET</span> ${w.addr} → ${w.value.toLocaleString()}</span><span style="color:#00FF88">✓ verified</span>`;
+    cp.appendChild(div);
+  }
+}
+</script>
+</body>
+</html>
