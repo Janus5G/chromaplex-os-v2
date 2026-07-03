@@ -1,7 +1,0 @@
-Metadata-Version: 2.4
-Name: chromaplex-os
-Version: 0.1.0
-Summary: ChromaPlex OS - krystalbaseret optisk datalagring
-Requires-Python: >=3.9
-Dynamic: requires-python
-Dynamic: summary
