@@ -1,0 +1,9 @@
+Gem chromaplex_os_package.json og unpack_chromaplex.py i samme mappe
+
+Kør: python unpack_chromaplex.py
+
+Alle filer og mapper udpakkes automatisk
+
+Installér med: pip install -e .
+
+Test med: python -m chromaplex_os.cli compile examples/hello.cpl -o hello.bin

@@ -1,0 +1,50 @@
+var uv_pattern = 99999;
+store uv_pattern at (2, 2, 2) colour UV;
+store uv_pattern at (2, 3, 2) colour UV;
+store uv_pattern at (3, 2, 2) colour UV;
+store uv_pattern at (3, 3, 2) colour UV;
+store uv_pattern at (4, 2, 2) colour UV;
+store uv_pattern at (4, 3, 2) colour UV;
+
+var violet_pattern = 88888;
+store violet_pattern at (5, 5, 1) colour VIOLET;
+store violet_pattern at (5, 6, 1) colour VIOLET;
+store violet_pattern at (6, 5, 1) colour VIOLET;
+store violet_pattern at (6, 6, 1) colour VIOLET;
+store violet_pattern at (7, 5, 1) colour VIOLET;
+store violet_pattern at (7, 6, 1) colour VIOLET;
+
+var blue_pattern = 77777;
+store blue_pattern at (1, 8, 3) colour BLUE;
+store blue_pattern at (2, 8, 3) colour BLUE;
+store blue_pattern at (1, 9, 3) colour BLUE;
+store blue_pattern at (2, 9, 3) colour BLUE;
+
+var green_pattern = 66666;
+store green_pattern at (8, 8, 0) colour GREEN;
+store green_pattern at (8, 9, 0) colour GREEN;
+store green_pattern at (9, 8, 0) colour GREEN;
+store green_pattern at (9, 9, 0) colour GREEN;
+store green_pattern at (8, 8, 1) colour GREEN;
+store green_pattern at (8, 9, 1) colour GREEN;
+store green_pattern at (9, 8, 1) colour GREEN;
+store green_pattern at (9, 9, 1) colour GREEN;
+
+var red_pattern = 55555;
+store red_pattern at (0, 0, 9) colour RED;
+store red_pattern at (0, 1, 9) colour RED;
+store red_pattern at (1, 0, 9) colour RED;
+store red_pattern at (1, 1, 9) colour RED;
+store red_pattern at (0, 0, 8) colour RED;
+store red_pattern at (0, 1, 8) colour RED;
+store red_pattern at (1, 0, 8) colour RED;
+store red_pattern at (1, 1, 8) colour RED;
+
+var large_number = 1234567;
+store large_number at (5, 5, 5) colour GREEN;
+store large_number at (5, 5, 5) colour UV;
+store large_number at (5, 5, 5) colour BLUE;
+store large_number at (5, 5, 5) colour RED;
+
+load verification from (5, 5, 5) colour GREEN;
+print verification;

@@ -1,0 +1,4 @@
+var x = 1000;
+store x at (10, 20, 30) colour GREEN;
+load y from (10, 20, 30) colour GREEN;
+print y;
