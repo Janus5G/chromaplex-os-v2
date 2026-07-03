@@ -5,174 +5,96 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ChromaPlex v2 — Interactive Demo</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#0a0a0a;color:#00ff88;font-family:'Courier New',monospace;min-height:100vh}
-.top{text-align:center;padding:12px;border-bottom:1px dashed #00ff8844}
-.top h1{font-size:24px;letter-spacing:2px}.top h1 span{color:#fff}
-.top p{font-size:11px;color:#00ff8888;margin-top:2px}
-.wrap{display:grid;grid-template-columns:320px 1fr 280px;min-height:calc(100vh - 80px)}
-@media(max-width:900px){.wrap{grid-template-columns:1fr;grid-template-rows:auto auto auto}}
-.col{border-right:1px dashed #00ff8833;padding:12px}
-.col:last-child{border-right:none}
-label{display:block;font-size:11px;color:#00ff88;margin:8px 0 3px;text-transform:uppercase;letter-spacing:1px}
-select,input[type=number]{width:100%;background:#111;color:#00ff88;border:1px solid #00ff8844;padding:6px 8px;font-family:inherit;font-size:13px;border-radius:3px}
-select option{background:#111;color:#00ff88}
-input[type=range]{width:100%;accent-color:#00ff88}
-button{width:100%;background:#00ff88;color:#000;border:none;padding:8px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;border-radius:3px;margin-top:6px;text-transform:uppercase;letter-spacing:1px}
-button:hover{background:#00dd77}
-button.secondary{background:#333;color:#00ff88;border:1px solid #00ff8844}
-button.secondary:hover{background:#444}
-button.red{background:#ff4444;color:#fff}
-.tabs{display:flex;gap:2px;margin-top:10px}
-.tab{flex:1;padding:5px;text-align:center;font-size:11px;cursor:pointer;background:#1a1a1a;border:1px solid #00ff8833;color:#666}
-.tab.active{background:#00ff8822;color:#00ff88;border-color:#00ff88}
-textarea{width:100%;background:#0a0a0a;color:#00ff88;border:1px solid #00ff8844;padding:8px;font-family:'Courier New',monospace;font-size:12px;line-height:1.5;resize:vertical;border-radius:3px}
-.output{background:#0a0a0a;border:1px solid #00ff8844;padding:8px;font-size:11px;line-height:1.5;min-height:80px;max-height:200px;overflow-y:auto;border-radius:3px;white-space:pre-wrap}
-.val-display{background:#111;border:1px solid #00ff8844;border-radius:3px;padding:8px;text-align:center;margin:6px 0}
-.val-display .big{font-size:24px;color:#fff;font-weight:700}
-.val-display .sub{font-size:11px;color:#00ff8888}
-.sensor-bar{display:flex;align-items:center;gap:6px;margin:3px 0}
-.sensor-bar .lbl{width:55px;font-size:11px}
-.sensor-bar .bar{flex:1;height:10px;background:#1a1a1a;border-radius:2px;overflow:hidden}
-.sensor-bar .bar div{height:100%;border-radius:2px;transition:width 0.4s}
-.sensor-bar .val{width:30px;text-align:right;font-size:11px}
-.chain-entry{background:#111;border:1px solid #00ff8822;border-radius:3px;padding:5px 8px;margin:3px 0;font-size:10px;display:flex;justify-content:space-between}
-.tag{padding:1px 5px;border-radius:2px;font-size:9px;font-weight:700}
-.t-w{background:#ff8800;color:#000}.t-e{background:#00ccff;color:#000}.t-wallet{background:#00ff88;color:#000}
-.stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin:6px 0}
-.stat{background:#111;border-radius:3px;padding:6px;text-align:center}
-.stat .n{font-size:18px;color:#fff;font-weight:700}
-.stat .l{font-size:9px;color:#00ff8888}
-svg text{font-family:'Courier New',monospace}
-.facet-poly{cursor:pointer;transition:fill 0.2s,stroke 0.2s}
-.facet-poly:hover{stroke:#ffff00;stroke-width:2}
-.links{text-align:center;padding:8px;font-size:10px;border-top:1px dashed #00ff8833}
-.links a{color:#00ccff;margin:0 8px;text-decoration:none}
-.colour-indicator{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:middle}
+*{box-sizing:border-box;margin:0;padding:0}body{background:#0a0a0a;color:#00ff88;font-family:'Courier New',monospace;min-height:100vh}.top{text-align:center;padding:12px;border-bottom:1px dashed #00ff8844}.top h1{font-size:24px;letter-spacing:2px}.top h1 span{color:#fff}.top p{font-size:11px;color:#00ff8888;margin-top:2px}.wrap{display:grid;grid-template-columns:280px 1fr 260px;min-height:calc(100vh - 80px)}@media(max-width:900px){.wrap{grid-template-columns:1fr}}.col{border-right:1px dashed #00ff8833;padding:10px}.col:last-child{border-right:none}label{display:block;font-size:10px;color:#00ff88;margin:6px 0 2px;text-transform:uppercase;letter-spacing:1px}select,input[type=number]{width:100%;background:#111;color:#00ff88;border:1px solid #00ff8844;padding:5px 6px;font-family:inherit;font-size:12px;border-radius:3px}input[type=range]{width:100%;accent-color:#00ff88}button{width:100%;background:#00ff88;color:#000;border:none;padding:7px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;border-radius:3px;margin-top:4px;text-transform:uppercase;letter-spacing:1px}button:hover{background:#00dd77}button.sec{background:#222;color:#00ff88;border:1px solid #00ff8844}.tabs{display:flex;gap:2px;margin-top:8px}.tab{flex:1;padding:4px;text-align:center;font-size:10px;cursor:pointer;background:#1a1a1a;border:1px solid #00ff8833;color:#666}.tab.active{background:#00ff8822;color:#00ff88;border-color:#00ff88}textarea{width:100%;background:#0a0a0a;color:#00ff88;border:1px solid #00ff8844;padding:6px;font-family:'Courier New',monospace;font-size:11px;line-height:1.4;resize:vertical;border-radius:3px}.output{background:#0a0a0a;border:1px solid #00ff8844;padding:6px;font-size:10px;line-height:1.4;min-height:60px;max-height:160px;overflow-y:auto;border-radius:3px;white-space:pre-wrap}.val-display{background:#111;border:1px solid #00ff8844;border-radius:3px;padding:6px;text-align:center;margin:4px 0}.val-display .big{font-size:20px;color:#fff;font-weight:700}.val-display .sub{font-size:10px;color:#00ff8888}.sensor-bar{display:flex;align-items:center;gap:4px;margin:2px 0}.sensor-bar .lbl{width:50px;font-size:10px}.sensor-bar .bar{flex:1;height:8px;background:#1a1a1a;border-radius:2px;overflow:hidden}.sensor-bar .bar div{height:100%;border-radius:2px;transition:width 0.4s}.sensor-bar .val{width:28px;text-align:right;font-size:10px}.chain-entry{background:#111;border:1px solid #00ff8822;border-radius:3px;padding:4px 6px;margin:2px 0;font-size:9px;display:flex;justify-content:space-between}.tag{padding:1px 4px;border-radius:2px;font-size:8px;font-weight:700}.t-w{background:#ff8800;color:#000}.t-e{background:#00ccff;color:#000}.t-wlt{background:#00ff88;color:#000}.stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin:4px 0}.stat{background:#111;border-radius:3px;padding:4px;text-align:center}.stat .n{font-size:16px;color:#fff;font-weight:700}.stat .l{font-size:8px;color:#00ff8888}.angle-box{background:#111;border:1px solid #00ff8844;border-radius:3px;padding:8px;margin:4px 0;font-size:11px}.angle-box .title{font-size:10px;color:#00ff8888;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px}.angle-box .row{display:flex;justify-content:space-between;margin:2px 0}.angle-box .label{color:#00ff8888}.angle-box .value{color:#fff;font-weight:700}.angle-box .snell{color:#00ccff;font-size:10px;margin-top:4px;border-top:1px solid #00ff8822;padding-top:4px}svg text{font-family:'Courier New',monospace}.facet-poly{cursor:pointer;transition:fill 0.2s,stroke 0.2s}.facet-poly:hover{stroke:#ffff00 !important;stroke-width:2 !important}.links{text-align:center;padding:6px;font-size:9px;border-top:1px dashed #00ff8833}.links a{color:#00ccff;margin:0 8px;text-decoration:none}
 </style>
 </head>
 <body>
-<div class="top">
-<h1>Chroma<span>Plex</span> OS v2</h1>
-<p>Interactive Faceted Crystal Storage Demo — 5 Laser Channels — Blockchain — Lens Readout</p>
-</div>
+<div class="top"><h1>Chroma<span>Plex</span> OS v2</h1><p>5 Lasers — Movable Light Source — 57 Facets — Blockchain — Lens Readout</p></div>
 <div class="wrap">
-
-<!-- LEFT: Controls -->
 <div class="col">
-<label>Facet (0–56)</label>
-<input type="range" id="facet-slider" min="0" max="56" value="5" oninput="updateFacetLabel()">
-<div style="display:flex;justify-content:space-between;font-size:11px"><span>Bord</span><span id="facet-val">Facet #5 (Krone)</span><span>Pavillon</span></div>
-
-<label>Bølgelængde / Laser</label>
-<select id="colour-select">
-<option value="uv" style="color:#9933ff">UV (350nm)</option>
-<option value="violet" style="color:#cc66ff">Violet (405nm)</option>
-<option value="blå" style="color:#00ccff">Blå (473nm)</option>
-<option value="grøn" style="color:#00ff88" selected>Grøn (532nm)</option>
-<option value="rød" style="color:#ff4444">Rød (650nm)</option>
+<label>Facet (0-56)</label><input type="range" id="facet-slider" min="0" max="56" value="5" oninput="updateAll()"><div style="display:flex;justify-content:space-between;font-size:10px"><span>Bord</span><span id="facet-val">#5</span><span>Pavillon</span></div>
+<label>Laser</label><select id="colour-select" onchange="updateAll()"><option value="uv">UV (350nm)</option><option value="violet">Violet (405nm)</option><option value="blå">Blå (473nm)</option><option value="grøn" selected>Grøn (532nm)</option><option value="rød">Rød (650nm)</option></select>
+<label>Laser vinkel offset (°)</label><input type="range" id="angle-offset" min="-15" max="15" value="0" step="0.5" oninput="updateAll()"><div style="text-align:center;font-size:10px" id="offset-label">0.0°</div>
+<label>Base</label><select id="base-select"><option value="2">Base 2</option><option value="3" selected>Base 3</option><option value="5">Base 5</option><option value="7">Base 7</option><option value="10">Base 10</option></select>
+<label>Værdi</label><input type="number" id="value-input" value="1234567" min="1" max="99999999">
+<button onclick="doStore()">STORE</button><button class="sec" onclick="doLensCapture()">LENS CAPTURE</button><button class="sec" onclick="doLensToChain()">LENS → CHAIN</button><button class="sec" onclick="doLoad()">LOAD</button>
+<div style="border-top:1px dashed #00ff8833;margin-top:6px;padding-top:6px">
+<label>Auto-scan (2 sek interval)</label>
+<button id="scan-btn" onclick="toggleScan()" style="background:#ff8800;color:#000">▶ START SCAN</button>
+<div style="font-size:10px;color:#00ff8888;margin-top:3px" id="scan-status">Scan: inaktiv</div>
+<label style="margin-top:4px">Scan hastighed</label>
+<select id="scan-speed" onchange="updateScanSpeed()">
+<option value="3000">Langsom (3s)</option>
+<option value="2000" selected>Normal (2s)</option>
+<option value="1000">Hurtig (1s)</option>
+<option value="500">Meget hurtig (0.5s)</option>
 </select>
-
-<label>Base (eksponent)</label>
-<select id="base-select">
-<option value="2">Base 2</option>
-<option value="3" selected>Base 3</option>
-<option value="5">Base 5</option>
-<option value="7">Base 7</option>
-<option value="10">Base 10</option>
-</select>
-
-<label>Værdi</label>
-<input type="number" id="value-input" value="1234567" min="1" max="99999999">
-
-<button onclick="doStore()">STORE (SKRIV)</button>
-<button class="secondary" onclick="doLensCapture()">LENS CAPTURE (LÆS)</button>
-<button class="secondary" onclick="doLensToChain()">LENS → BLOCKCHAIN</button>
-<button class="secondary" onclick="doLoad()">LOAD (LÆS DIREKTE)</button>
-
-<div class="val-display" id="read-display" style="display:none">
-<div class="big" id="read-value">—</div>
-<div class="sub" id="read-repr">—</div>
 </div>
-
-<!-- Code editor -->
-<div class="tabs">
-<div class="tab active" id="tab-cpl" onclick="switchTab('cpl')">CPL</div>
-<div class="tab" id="tab-py" onclick="switchTab('py')">Python</div>
-</div>
-<textarea id="code-cpl" rows="8">var data = 1234567;
+<div class="val-display" id="read-display" style="display:none"><div class="big" id="read-value">—</div><div class="sub" id="read-repr">—</div></div>
+<div class="tabs"><div class="tab active" id="tab-cpl" onclick="switchTab('cpl')">CPL</div><div class="tab" id="tab-py" onclick="switchTab('py')">Python</div></div>
+<textarea id="code-cpl" rows="6">var data = 1234567;
 store data at facet(0, 5) colour GREEN;
 lens_capture facet(0, 5);
 lens_to_chain;
 load result from facet(0, 5) colour GREEN;
 print result;</textarea>
-<textarea id="code-py" rows="8" style="display:none">cx.store(facet=5, colour="GREEN", value=1234567, base=3)
+<textarea id="code-py" rows="6" style="display:none">cx.store(facet=5, colour="GREEN", value=1234567, base=3)
 cx.lens_capture(facet=5)
 cx.lens_to_chain()
 result = cx.load(facet=5, colour="GREEN")
 print(result)</textarea>
 <button onclick="runCode()">▶ KØR KODE</button>
 </div>
-
-<!-- CENTER: Crystal -->
 <div class="col" style="display:flex;flex-direction:column">
-<div style="flex:1;display:flex;align-items:center;justify-content:center">
-<svg viewBox="0 0 360 380" width="100%" id="crystal-svg" style="max-width:400px">
-<!-- Laser beam -->
-<line id="laser-line" x1="0" y1="0" x2="0" y2="0" stroke="#00ff88" stroke-width="2" stroke-dasharray="5,3" opacity="0">
-<animate attributeName="stroke-dashoffset" values="0;-8" dur="0.4s" repeatCount="indefinite"/>
-</line>
-
-<!-- Crown facets - Table -->
-<polygon id="f0" class="facet-poly" points="180,20 140,80 220,80" fill="#1a1a1a" stroke="#00ff8844" stroke-width="1" onclick="clickFacet(0)" data-group="bord"/>
-
-<!-- Crown star facets -->
-<polygon id="f1" class="facet-poly" points="140,80 120,55 160,20" fill="#111" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(1)" data-group="krone"/>
-<polygon id="f2" class="facet-poly" points="160,20 180,20 140,80" fill="#151515" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(2)" data-group="krone"/>
-<polygon id="f3" class="facet-poly" points="180,20 200,20 220,80" fill="#151515" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(3)" data-group="krone"/>
-<polygon id="f4" class="facet-poly" points="220,80 240,55 200,20" fill="#111" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(4)" data-group="krone"/>
-<polygon id="f5" class="facet-poly" points="120,55 140,80 100,90" fill="#111" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(5)" data-group="krone"/>
-<polygon id="f6" class="facet-poly" points="240,55 220,80 260,90" fill="#111" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(6)" data-group="krone"/>
-<polygon id="f7" class="facet-poly" points="100,90 140,80 80,100" fill="#0d0d0d" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(7)" data-group="krone"/>
-<polygon id="f8" class="facet-poly" points="260,90 220,80 280,100" fill="#0d0d0d" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(8)" data-group="krone"/>
-
-<!-- Upper girdle -->
-<polygon id="f9" class="facet-poly" points="80,100 140,80 100,120" fill="#0f0f0f" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(9)" data-group="girdle"/>
-<polygon id="f10" class="facet-poly" points="100,120 140,80 140,120" fill="#121212" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(10)" data-group="girdle"/>
-<polygon id="f11" class="facet-poly" points="140,120 140,80 180,120" fill="#0f0f0f" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(11)" data-group="girdle"/>
-<polygon id="f12" class="facet-poly" points="180,120 220,80 220,120" fill="#121212" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(12)" data-group="girdle"/>
-<polygon id="f13" class="facet-poly" points="220,120 220,80 260,120" fill="#0f0f0f" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(13)" data-group="girdle"/>
-<polygon id="f14" class="facet-poly" points="260,120 220,80 280,100" fill="#121212" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(14)" data-group="girdle"/>
-
-<!-- Girdle line -->
-<line x1="60" y1="130" x2="300" y2="130" stroke="#00ff8855" stroke-width="1"/>
-
-<!-- Pavilion facets -->
-<polygon id="f15" class="facet-poly" points="60,130 120,130 100,180" fill="#0d0d0d" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(15)" data-group="pavillon"/>
-<polygon id="f16" class="facet-poly" points="100,180 120,130 150,130" fill="#0a0a0a" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(16)" data-group="pavillon"/>
-<polygon id="f17" class="facet-poly" points="100,180 150,130 180,350" fill="#080808" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(17)" data-group="pavillon"/>
-<polygon id="f18" class="facet-poly" points="150,130 210,130 180,350" fill="#0a0a0a" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(18)" data-group="pavillon"/>
-<polygon id="f19" class="facet-poly" points="210,130 240,130 260,180" fill="#0a0a0a" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(19)" data-group="pavillon"/>
-<polygon id="f20" class="facet-poly" points="260,180 240,130 300,130" fill="#0d0d0d" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(20)" data-group="pavillon"/>
-<polygon id="f21" class="facet-poly" points="260,180 210,130 180,350" fill="#080808" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(21)" data-group="pavillon"/>
-
-<!-- Refracted light lines (hidden initially) -->
-<line id="refr-uv" x1="280" y1="90" x2="360" y2="70" stroke="#9933ff" stroke-width="1.5" opacity="0"/>
-<line id="refr-vi" x1="280" y1="90" x2="360" y2="80" stroke="#cc66ff" stroke-width="1.5" opacity="0"/>
-<line id="refr-bl" x1="280" y1="90" x2="360" y2="90" stroke="#00ccff" stroke-width="1.5" opacity="0"/>
-<line id="refr-gr" x1="280" y1="90" x2="360" y2="100" stroke="#00ff88" stroke-width="1.5" opacity="0"/>
-<line id="refr-rd" x1="280" y1="90" x2="360" y2="110" stroke="#ff4444" stroke-width="1.5" opacity="0"/>
-
-<!-- Labels -->
-<text id="laser-label" x="5" y="0" fill="#00ff88" font-size="10" opacity="0">LASER →</text>
-<text id="lens-label" x="310" y="85" fill="#666" font-size="9" opacity="0">→ LENS</text>
-<text x="180" y="375" fill="#00ff8844" font-size="9" text-anchor="middle">Click a facet to select it</text>
+<div style="flex:1">
+<svg viewBox="0 0 400 380" width="100%" style="max-height:300px">
+<line x1="200" y1="10" x2="200" y2="370" stroke="#00ff8815" stroke-width="1" stroke-dasharray="4,4"/><text x="204" y="18" fill="#00ff8822" font-size="7">optical axis</text>
+<line id="laser-line" x1="0" y1="0" x2="0" y2="0" stroke="#00ff88" stroke-width="2.5" stroke-dasharray="6,3" opacity="0"><animate attributeName="stroke-dashoffset" values="0;-9" dur="0.4s" repeatCount="indefinite"/></line>
+<polygon id="f0" class="facet-poly" points="200,35 160,95 240,95" fill="#1a1a1a" stroke="#00ff8844" stroke-width="1" onclick="clickFacet(0)"/>
+<polygon id="f1" class="facet-poly" points="160,95 135,70 175,35" fill="#111" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(1)"/>
+<polygon id="f2" class="facet-poly" points="175,35 200,35 160,95" fill="#151515" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(2)"/>
+<polygon id="f3" class="facet-poly" points="200,35 225,35 240,95" fill="#151515" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(3)"/>
+<polygon id="f4" class="facet-poly" points="240,95 265,70 225,35" fill="#111" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(4)"/>
+<polygon id="f5" class="facet-poly" points="135,70 160,95 115,108" fill="#111" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(5)"/>
+<polygon id="f6" class="facet-poly" points="265,70 240,95 285,108" fill="#111" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(6)"/>
+<polygon id="f7" class="facet-poly" points="115,108 160,95 95,125" fill="#0d0d0d" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(7)"/>
+<polygon id="f8" class="facet-poly" points="285,108 240,95 305,125" fill="#0d0d0d" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(8)"/>
+<polygon id="f9" class="facet-poly" points="95,125 160,95 125,135" fill="#0f0f0f" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(9)"/>
+<polygon id="f10" class="facet-poly" points="125,135 160,95 165,135" fill="#121212" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(10)"/>
+<polygon id="f11" class="facet-poly" points="165,135 160,95 200,135" fill="#0f0f0f" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(11)"/>
+<polygon id="f12" class="facet-poly" points="200,135 240,95 235,135" fill="#121212" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(12)"/>
+<polygon id="f13" class="facet-poly" points="235,135 240,95 275,135" fill="#0f0f0f" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(13)"/>
+<polygon id="f14" class="facet-poly" points="275,135 240,95 305,125" fill="#121212" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(14)"/>
+<line x1="75" y1="145" x2="325" y2="145" stroke="#00ff8855" stroke-width="1"/>
+<polygon id="f15" class="facet-poly" points="75,145 135,145 115,195" fill="#0d0d0d" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(15)"/>
+<polygon id="f16" class="facet-poly" points="115,195 135,145 170,145" fill="#0a0a0a" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(16)"/>
+<polygon id="f17" class="facet-poly" points="115,195 170,145 200,350" fill="#080808" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(17)"/>
+<polygon id="f18" class="facet-poly" points="170,145 230,145 200,350" fill="#0a0a0a" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(18)"/>
+<polygon id="f19" class="facet-poly" points="230,145 265,145 285,195" fill="#0a0a0a" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(19)"/>
+<polygon id="f20" class="facet-poly" points="285,195 265,145 325,145" fill="#0d0d0d" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(20)"/>
+<polygon id="f21" class="facet-poly" points="285,195 230,145 200,350" fill="#080808" stroke="#00ff8822" stroke-width="0.5" onclick="clickFacet(21)"/>
+<line id="refr-uv" x1="0" y1="0" x2="0" y2="0" stroke="#9933ff" stroke-width="1.5" opacity="0"/>
+<line id="refr-vi" x1="0" y1="0" x2="0" y2="0" stroke="#cc66ff" stroke-width="1.5" opacity="0"/>
+<line id="refr-bl" x1="0" y1="0" x2="0" y2="0" stroke="#00ccff" stroke-width="1.5" opacity="0"/>
+<line id="refr-gr" x1="0" y1="0" x2="0" y2="0" stroke="#00ff88" stroke-width="1.5" opacity="0"/>
+<line id="refr-rd" x1="0" y1="0" x2="0" y2="0" stroke="#ff4444" stroke-width="1.5" opacity="0"/>
+<ellipse id="lens-sym" cx="360" cy="100" rx="4" ry="25" fill="none" stroke="#666" stroke-width="1.5" opacity="0"/>
+<text id="lens-lbl" x="348" y="70" fill="#666" font-size="9" opacity="0">LENS</text>
+<circle id="laser-dot" cx="0" cy="0" r="5" fill="#00ff88" opacity="0"/>
+<text id="laser-src" x="0" y="0" fill="#00ff88" font-size="9" opacity="0">LASER</text>
 </svg>
 </div>
-
-<!-- Sensor bars -->
-<div id="sensor-panel" style="border-top:1px dashed #00ff8833;padding-top:8px">
-<div style="font-size:11px;color:#00ff8888;margin-bottom:4px">SENSOR READOUT</div>
+<div class="angle-box">
+<div class="title">Optiske vinkler (Snell's lov)</div>
+<div class="row"><span class="label">Facet θ:</span><span class="value" id="a-theta">—</span></div>
+<div class="row"><span class="label">Facet φ:</span><span class="value" id="a-phi">—</span></div>
+<div class="row"><span class="label">Offset:</span><span class="value" id="a-offset">0.0°</span></div>
+<div class="row"><span class="label">θ_in:</span><span class="value" id="a-in">—</span></div>
+<div class="row"><span class="label">θ_out:</span><span class="value" id="a-out">—</span></div>
+<div class="snell" id="snell-eq">n₁·sin(θ_in) = n₂·sin(θ_out)</div>
+</div>
+<div style="border-top:1px dashed #00ff8833;padding-top:6px">
+<div style="font-size:10px;color:#00ff8888;margin-bottom:3px">SENSOR (5 KANALER)</div>
 <div class="sensor-bar"><span class="lbl" style="color:#9933ff">UV 350</span><div class="bar"><div id="bar-uv" style="width:0%;background:#9933ff"></div></div><span class="val" id="sv-uv">—</span></div>
 <div class="sensor-bar"><span class="lbl" style="color:#cc66ff">Vio 405</span><div class="bar"><div id="bar-vi" style="width:0%;background:#cc66ff"></div></div><span class="val" id="sv-vi">—</span></div>
 <div class="sensor-bar"><span class="lbl" style="color:#00ccff">Blå 473</span><div class="bar"><div id="bar-bl" style="width:0%;background:#00ccff"></div></div><span class="val" id="sv-bl">—</span></div>
@@ -180,255 +102,99 @@ print(result)</textarea>
 <div class="sensor-bar"><span class="lbl" style="color:#ff4444">Rød 650</span><div class="bar"><div id="bar-rd" style="width:0%;background:#ff4444"></div></div><span class="val" id="sv-rd">—</span></div>
 </div>
 </div>
-
-<!-- RIGHT: Blockchain + Output -->
 <div class="col">
-<div style="font-size:11px;color:#00ff8888;margin-bottom:4px">BLOCKCHAIN LEDGER</div>
-<div id="chain-panel" style="max-height:200px;overflow-y:auto">
-<div style="color:#333;font-size:11px">No entries yet</div>
-</div>
-
-<div class="stat-row" id="stats">
-<div class="stat"><div class="n" id="st-f">0</div><div class="l">Facets</div></div>
-<div class="stat"><div class="n" id="st-b">0</div><div class="l">Blocks</div></div>
-<div class="stat"><div class="n" id="st-w">0</div><div class="l">Wallets</div></div>
-</div>
-
-<div style="font-size:11px;color:#00ff8888;margin:8px 0 4px">OUTPUT</div>
-<div class="output" id="output">> System initialiseret...
-> 5 laserkanaler klar
-> 57 facetter tilgængelige
-> Blockchain genesis blok oprettet</div>
+<div style="font-size:10px;color:#00ff8888;margin-bottom:3px">BLOCKCHAIN</div>
+<div id="chain-panel" style="max-height:180px;overflow-y:auto"><div style="color:#333;font-size:10px">No entries</div></div>
+<div class="stat-row"><div class="stat"><div class="n" id="st-f">0</div><div class="l">Facets</div></div><div class="stat"><div class="n" id="st-b">0</div><div class="l">Blocks</div></div><div class="stat"><div class="n" id="st-w">0</div><div class="l">Wallets</div></div></div>
+<div style="font-size:10px;color:#00ff8888;margin:6px 0 3px">OUTPUT</div>
+<div class="output" id="output">> System ready — 5 lasers, 57 facets</div>
 </div>
 </div>
-
-<div class="links">
-<a href="https://github.com/Janus5G/chromaplex-os-v2">GitHub v2</a>
-<a href="https://chromaplex-wallet-sgm.caffeine.xyz/">Live Wallet</a>
-<a href="https://github.com/Janus5G/chromaplex-os">v1 Original</a>
-<a href="https://github.com/Janus5G/Cplex">Desktop IDE</a>
-</div>
-
+<div class="links"><a href="https://github.com/Janus5G/chromaplex-os-v2">GitHub v2</a><a href="https://chromaplex-wallet-sgm.caffeine.xyz/">Wallet</a><a href="https://github.com/Janus5G/chromaplex-os">v1</a><a href="https://github.com/Janus5G/Cplex">IDE</a></div>
 <script>
-const COLOURS = {uv:{nm:350,hex:'#9933ff',ri:1.4760},violet:{nm:405,hex:'#cc66ff',ri:1.4701},blå:{nm:473,hex:'#00ccff',ri:1.4650},grøn:{nm:532,hex:'#00ff88',ri:1.4613},rød:{nm:650,hex:'#ff4444',ri:1.4580}};
-const GROUPS = {0:'Bord',1:'Krone',2:'Krone',3:'Krone',4:'Krone',5:'Krone',6:'Krone',7:'Krone',8:'Krone',9:'Ø.Bælte',10:'Ø.Bælte',11:'Ø.Bælte',12:'Ø.Bælte',13:'Ø.Bælte',14:'Ø.Bælte',15:'Pavillon',16:'Pavillon',17:'Pavillon',18:'Pavillon',19:'Pavillon',20:'Pavillon',21:'Pavillon'};
-
-class Sim {
-  constructor(){this.data={};this.chain=[];this.wallets=[];this.locked=new Set()}
-  _k(f,c){return`C0:F${f}:${c}:D0`}
-  _h(s){let h=0;for(let i=0;i<s.length;i++)h=((h<<5)-h+s.charCodeAt(i))|0;return Math.abs(h).toString(16).padStart(8,'0')+Math.abs(h*31+7).toString(16).padStart(8,'0')}
-  _enc(v,b){if(v<=0)return[0,0,b];let e=0;while(Math.pow(b,e+1)<=v)e++;return[e,v-Math.pow(b,e),b]}
-  store(f,col,val,base){
-    const k=this._k(f,col);
-    if(this.locked.has(k))throw new Error(`${k} LÅST`);
-    const[e,r,b]=this._enc(val,base);
-    this.data[k]={e,r,b,value:val};
-    const prev=this.chain.length?this.chain[this.chain.length-1].hash:'0'.repeat(16);
-    const hash=this._h(`${this.chain.length}:${k}:WRITE:${prev}`);
-    this.chain.push({op:'WRITE',addr:k,hash,prev,base:b});
-    this.locked.add(k);
-    return{addr:k,e,r,b};
-  }
-  load(f,col){const k=this._k(f,col);return this.data[k]?this.data[k]:null}
-  lensCapture(f){
-    const res={};
-    for(const[k,v]of Object.entries(this.data)){
-      if(k.startsWith(`C0:F${f}:`)){const c=k.split(':')[2];res[c]=v}}
-    return res;
-  }
-  lensToChain(){
-    let n=0;
-    for(const[k,v]of Object.entries(this.data)){
-      if(!this.chain.some(e=>e.op==='EXTRACT'&&e.addr===k)){
-        const prev=this.chain.length?this.chain[this.chain.length-1].hash:'0'.repeat(16);
-        const hash=this._h(`${this.chain.length}:${k}:EXTRACT:${prev}`);
-        this.chain.push({op:'EXTRACT',addr:k,hash,prev,base:v.b});
-        this.wallets.push({id:hash.slice(0,16),addr:k,value:v.value,b:v.b,e:v.e,r:v.r});
-        n++;
-      }
-    }
-    return n;
-  }
-  valid(){if(!this.chain.length)return true;if(this.chain[0].prev!=='0'.repeat(16))return false;for(let i=1;i<this.chain.length;i++)if(this.chain[i].prev!==this.chain[i-1].hash)return false;return true}
-  facetsUsed(){return new Set(Object.keys(this.data).map(k=>parseInt(k.split(':')[1].slice(1)))).size}
+const C={uv:{nm:350,hex:'#9933ff',ri:1.4760},violet:{nm:405,hex:'#cc66ff',ri:1.4701},'blå':{nm:473,hex:'#00ccff',ri:1.4650},'grøn':{nm:532,hex:'#00ff88',ri:1.4613},'rød':{nm:650,hex:'#ff4444',ri:1.4580}};
+const FD=[];(function(){FD.push({theta:0,phi:0,g:'Bord'});for(let i=0;i<8;i++)FD.push({theta:15,phi:i*45,g:'Krone'});for(let i=0;i<8;i++)FD.push({theta:34.5,phi:i*45+22.5,g:'Krone-hoved'});for(let i=0;i<16;i++)FD.push({theta:42,phi:i*22.5,g:'Ø.Bælte'});for(let i=0;i<16;i++)FD.push({theta:138,phi:i*22.5+11.25,g:'N.Bælte'});for(let i=0;i<8;i++)FD.push({theta:155,phi:i*45,g:'Pavillon'})})();
+function gfd(id){return FD[id]||FD[0]}
+function snell(ti,n1,n2){const s=(n1/n2)*Math.sin(ti*Math.PI/180);return Math.abs(s)>1?-1:Math.asin(s)*180/Math.PI}
+function fc(fid){const el=document.getElementById('f'+Math.min(fid,21));if(!el)return{x:200,y:100};const pts=el.getAttribute('points').split(' ');let sx=0,sy=0;pts.forEach(p=>{const[x,y]=p.split(',').map(Number);sx+=x;sy+=y});return{x:sx/pts.length,y:sy/pts.length}}
+let af=5;
+function gcol(){return document.getElementById('colour-select').value}
+function ghex(){return C[gcol()].hex}
+function gbase(){return parseInt(document.getElementById('base-select').value)}
+function gval(){return parseInt(document.getElementById('value-input').value)||0}
+function goff(){return parseFloat(document.getElementById('angle-offset').value)}
+function clickFacet(f){af=f;document.getElementById('facet-slider').value=Math.min(f,56);updateAll()}
+function updateAll(){
+  const f=parseInt(document.getElementById('facet-slider').value);af=f;const fd=gfd(f),off=goff(),col=gcol(),ci=C[col],sf=Math.min(f,21);
+  document.getElementById('facet-val').textContent=`#${f} ${fd.g}`;
+  document.getElementById('offset-label').textContent=off.toFixed(1)+'°';
+  document.querySelectorAll('.facet-poly').forEach(p=>{const c=p.id===`f${sf}`;p.setAttribute('fill',c?ghex()+'30':'#111');p.setAttribute('stroke',c?ghex():'#00ff8833');p.setAttribute('stroke-width',c?'2':'0.5')});
+  const ti=fd.theta+off,to=snell(Math.abs(ti),1.0,ci.ri);
+  document.getElementById('a-theta').textContent=fd.theta.toFixed(1)+'°';
+  document.getElementById('a-phi').textContent=fd.phi.toFixed(1)+'°';
+  document.getElementById('a-offset').textContent=(off>=0?'+':'')+off.toFixed(1)+'°';
+  document.getElementById('a-in').textContent=Math.abs(ti).toFixed(2)+'°';
+  document.getElementById('a-out').textContent=to>=0?to.toFixed(2)+'°':'TIR';
+  document.getElementById('snell-eq').innerHTML=`n₁·sin(${Math.abs(ti).toFixed(1)}°) = ${ci.ri.toFixed(4)}·sin(${to>=0?to.toFixed(1)+'°':'TIR'})<br>${col} ${ci.nm}nm — n₂ = ${ci.ri.toFixed(4)}`;
+  const center=fc(sf),ar=(ti-90)*Math.PI/180,ld=150,lx=center.x+Math.cos(ar)*ld,ly=center.y+Math.sin(ar)*ld;
+  const ll=document.getElementById('laser-line');ll.setAttribute('x1',lx);ll.setAttribute('y1',ly);ll.setAttribute('x2',center.x);ll.setAttribute('y2',center.y);ll.setAttribute('stroke',ghex());ll.setAttribute('opacity','1');
+  const dot=document.getElementById('laser-dot');dot.setAttribute('cx',lx);dot.setAttribute('cy',ly);dot.setAttribute('fill',ghex());dot.setAttribute('opacity','1');
+  const src=document.getElementById('laser-src');src.setAttribute('x',lx-15);src.setAttribute('y',ly-10);src.setAttribute('fill',ghex());src.setAttribute('opacity','1');
+  const rids=['uv','vi','bl','gr','rd'],rcols=['uv','violet','blå','grøn','rød'];
+  rids.forEach((rid,i)=>{const rc=C[rcols[i]],ra=snell(Math.abs(ti),1.0,rc.ri);if(ra<0){document.getElementById('refr-'+rid).setAttribute('opacity','0');return}const ear=(ra-90+i*3-6)*Math.PI/180,ex=center.x+Math.cos(ear+Math.PI-ar)*120,ey=center.y+Math.sin(ear+Math.PI-ar)*120;const rl=document.getElementById('refr-'+rid);rl.setAttribute('x1',center.x);rl.setAttribute('y1',center.y);rl.setAttribute('x2',ex);rl.setAttribute('y2',ey);rl.setAttribute('opacity','0.6')});
+  const lsx=center.x+130,lsy=center.y;document.getElementById('lens-sym').setAttribute('cx',lsx);document.getElementById('lens-sym').setAttribute('cy',lsy);document.getElementById('lens-sym').setAttribute('opacity','1');document.getElementById('lens-lbl').setAttribute('x',lsx-8);document.getElementById('lens-lbl').setAttribute('y',lsy-30);document.getElementById('lens-lbl').setAttribute('opacity','1');
 }
-
+class Sim{constructor(){this.data={};this.chain=[];this.wallets=[];this.locked=new Set()}_k(f,c){return`C0:F${f}:${c}:D0`}_h(s){let h=0;for(let i=0;i<s.length;i++)h=((h<<5)-h+s.charCodeAt(i))|0;return Math.abs(h).toString(16).padStart(8,'0')+Math.abs(h*31+7).toString(16).padStart(8,'0')}_enc(v,b){if(v<=0)return[0,0,b];let e=0;while(Math.pow(b,e+1)<=v)e++;return[e,v-Math.pow(b,e),b]}store(f,col,val,base){const k=this._k(f,col);if(this.locked.has(k))throw new Error(k+' LOCKED');const[e,r,b]=this._enc(val,base);this.data[k]={e,r,b,value:val};const prev=this.chain.length?this.chain[this.chain.length-1].hash:'0'.repeat(16);const hash=this._h(this.chain.length+':'+k+':WRITE:'+prev);this.chain.push({op:'WRITE',addr:k,hash,prev});this.locked.add(k);return{addr:k,e,r,b}}load(f,col){return this.data[this._k(f,col)]||null}lensCapture(f){const res={};for(const[k,v]of Object.entries(this.data))if(k.startsWith('C0:F'+f+':'))res[k.split(':')[2]]=v;return res}lensToChain(){let n=0;for(const[k,v]of Object.entries(this.data)){if(!this.chain.some(e=>e.op==='EXTRACT'&&e.addr===k)){const prev=this.chain.length?this.chain[this.chain.length-1].hash:'0'.repeat(16);const hash=this._h(this.chain.length+':'+k+':EXTRACT:'+prev);this.chain.push({op:'EXTRACT',addr:k,hash,prev});this.wallets.push({addr:k,value:v.value,b:v.b,e:v.e,r:v.r});n++}}return n}fu(){return new Set(Object.keys(this.data).map(k=>parseInt(k.split(':')[1].slice(1)))).size}}
 const sim=new Sim();
-let activeFacet=5;
+function log(m){const o=document.getElementById('output');o.textContent+='\n> '+m;o.scrollTop=o.scrollHeight}
+function uSensor(ch){const map={uv:'uv',violet:'vi','blå':'bl','grøn':'gr','rød':'rd'};Object.values(map).forEach(id=>{document.getElementById('bar-'+id).style.width='0%';document.getElementById('sv-'+id).textContent='—'});for(const[c,v]of Object.entries(ch)){const id=map[c];if(!id)continue;document.getElementById('bar-'+id).style.width=Math.min(100,v.value/Math.max(gval(),1)*80+20)+'%';document.getElementById('sv-'+id).textContent=v.value.toLocaleString()}}
+function uChain(){const cp=document.getElementById('chain-panel');cp.innerHTML='';sim.chain.forEach(e=>{cp.innerHTML+='<div class="chain-entry"><span><span class="tag '+(e.op==='WRITE'?'t-w':'t-e')+'">'+e.op+'</span> '+e.addr+'</span><span style="color:#333">'+e.hash.slice(0,10)+'…</span></div>'});sim.wallets.forEach(w=>{cp.innerHTML+='<div class="chain-entry"><span><span class="tag t-wlt">WALLET</span> '+w.value.toLocaleString()+'</span><span style="color:#00ff88">✓</span></div>'});document.getElementById('st-f').textContent=sim.fu();document.getElementById('st-b').textContent=sim.chain.length;document.getElementById('st-w').textContent=sim.wallets.length}
+function doStore(){try{const r=sim.store(af,gcol(),gval(),gbase());log('WRITE '+r.addr+' — '+r.b+'^'+r.e+'+'+r.r+' = '+gval());uChain();updateAll()}catch(e){log('ERROR: '+e.message)}}
+function doLoad(){const d=sim.load(af,gcol());const rd=document.getElementById('read-display');rd.style.display='block';if(d){document.getElementById('read-value').textContent=d.value.toLocaleString();document.getElementById('read-repr').textContent=d.b+'^'+d.e+' + '+d.r;log('LOAD C0:F'+af+':'+gcol()+' = '+d.value)}else{document.getElementById('read-value').textContent='(empty)';document.getElementById('read-repr').textContent='';log('LOAD (no data)')}}
+function doLensCapture(){const ch=sim.lensCapture(af);uSensor(ch);log('LENS #'+af+' → '+Object.entries(ch).map(([k,v])=>k+':'+v.value).join(' '));updateAll()}
+function doLensToChain(){const n=sim.lensToChain();log('CHAIN: '+n+' payload(s) ✓');uChain()}
+function switchTab(t){document.getElementById('tab-cpl').className='tab'+(t==='cpl'?' active':'');document.getElementById('tab-py').className='tab'+(t==='py'?' active':'');document.getElementById('code-cpl').style.display=t==='cpl'?'block':'none';document.getElementById('code-py').style.display=t==='py'?'block':'none'}
+function runCode(){const isCpl=document.getElementById('code-cpl').style.display!=='none';const code=isCpl?document.getElementById('code-cpl').value:document.getElementById('code-py').value;log('['+( isCpl?'CPL':'Py')+'] Running...');const lines=code.split('\n').map(l=>l.trim()).filter(l=>l&&!l.startsWith('//')&&!l.startsWith('#'));for(const line of lines){try{if(isCpl){if(line.startsWith('var ')){const m=line.match(/var\s+(\w+)\s*=\s*(\d+)/);if(m)window['_v_'+m[1]]=parseInt(m[2])}else if(line.startsWith('store ')){const m=line.match(/store\s+(\w+)\s+at\s+facet\((\d+),\s*(\d+)\)\s+colour\s+(\w+)/i);if(m){const val=window['_v_'+m[1]]||parseInt(m[1]);const col=m[4].toLowerCase().replace('green','grøn').replace('red','rød').replace('blue','blå');af=parseInt(m[3]);document.getElementById('facet-slider').value=af;const cs=document.getElementById('colour-select');for(let i=0;i<cs.options.length;i++)if(cs.options[i].value===col)cs.selectedIndex=i;doStore()}}else if(line.startsWith('lens_capture')){const m=line.match(/facet\((\d+),\s*(\d+)\)/);if(m){af=parseInt(m[2]);document.getElementById('facet-slider').value=af;doLensCapture()}}else if(line.startsWith('lens_to_chain'))doLensToChain();else if(line.startsWith('load ')){const m=line.match(/load\s+(\w+)\s+from\s+facet\((\d+),\s*(\d+)\)\s+colour\s+(\w+)/i);if(m){af=parseInt(m[3]);document.getElementById('facet-slider').value=af;const col=m[4].toLowerCase().replace('green','grøn').replace('red','rød').replace('blue','blå');const cs=document.getElementById('colour-select');for(let i=0;i<cs.options.length;i++)if(cs.options[i].value===col)cs.selectedIndex=i;doLoad();const d=sim.load(af,gcol());if(d)window['_v_'+m[1]]=d.value}}else if(line.startsWith('print ')){const m=line.match(/print\s+(\w+)/);if(m)log('[print] '+(window['_v_'+m[1]]||'?'))}}else{if(line.includes('cx.store(')){const m=line.match(/facet=(\d+).*colour="(\w+)".*value=(\d+)(?:.*base=(\d+))?/);if(m){af=parseInt(m[1]);const col=m[2].toLowerCase().replace('green','grøn').replace('red','rød').replace('blue','blå');document.getElementById('facet-slider').value=af;const cs=document.getElementById('colour-select');for(let i=0;i<cs.options.length;i++)if(cs.options[i].value===col)cs.selectedIndex=i;document.getElementById('value-input').value=m[3];if(m[4])document.getElementById('base-select').value=m[4];doStore()}}else if(line.includes('cx.lens_capture(')){const m=line.match(/facet=(\d+)/);if(m){af=parseInt(m[1]);document.getElementById('facet-slider').value=af;doLensCapture()}}else if(line.includes('cx.lens_to_chain'))doLensToChain();else if(line.includes('cx.load(')){const m=line.match(/facet=(\d+)/);if(m){af=parseInt(m[1]);document.getElementById('facet-slider').value=af;doLoad()}}else if(line.includes('print('))log('[print] '+(sim.load(af,gcol())?.value||'?'))}}catch(e){log('ERROR: '+e.message)}}log('Done ✓')}
 
-function updateFacetLabel(){
-  const f=parseInt(document.getElementById('facet-slider').value);
-  activeFacet=f;
-  const g=GROUPS[f]||(f<17?'Ø.Bælte':'Pavillon');
-  document.getElementById('facet-val').textContent=`Facet #${f} (${g})`;
-  highlightFacet(f);
+let scanInterval=null;
+let scanFacet=0;
+let scanColourIdx=0;
+const scanColours=['uv','violet','blå','grøn','rød'];
+function toggleScan(){
+  if(scanInterval){stopScan()}
+  else{startScan()}
 }
-
-function clickFacet(f){
-  activeFacet=f;
-  document.getElementById('facet-slider').value=f;
-  updateFacetLabel();
+function startScan(){
+  scanFacet=0;scanColourIdx=0;
+  document.getElementById('scan-btn').textContent='■ STOP SCAN';
+  document.getElementById('scan-btn').style.background='#ff4444';
+  const speed=parseInt(document.getElementById('scan-speed').value);
+  scanInterval=setInterval(scanStep,speed);
+  scanStep();
 }
-
-function highlightFacet(f){
-  document.querySelectorAll('.facet-poly').forEach(p=>{
-    p.setAttribute('fill',p.id===`f${f}`?getColourHex()+'33':'#111');
-    p.setAttribute('stroke',p.id===`f${f}`?getColourHex():'#00ff8833');
-    p.setAttribute('stroke-width',p.id===`f${f}`?'2':'0.5');
-  });
+function stopScan(){
+  clearInterval(scanInterval);scanInterval=null;
+  document.getElementById('scan-btn').textContent='▶ START SCAN';
+  document.getElementById('scan-btn').style.background='#ff8800';
+  document.getElementById('scan-status').textContent='Scan: stoppet ved facet #'+af+' '+gcol();
 }
-
-function getColour(){return document.getElementById('colour-select').value}
-function getColourHex(){return COLOURS[getColour()].hex}
-function getBase(){return parseInt(document.getElementById('base-select').value)}
-function getValue(){return parseInt(document.getElementById('value-input').value)||0}
-
-function log(msg){
-  const o=document.getElementById('output');
-  o.textContent+= '\n> '+msg;
-  o.scrollTop=o.scrollHeight;
+function updateScanSpeed(){
+  if(scanInterval){stopScan();startScan()}
 }
-
-function showLaser(f){
-  const el=document.getElementById(`f${Math.min(f,21)}`);
-  if(!el)return;
-  const pts=el.getAttribute('points').split(' ');
-  const xs=pts.map(p=>parseFloat(p.split(',')[0]));
-  const ys=pts.map(p=>parseFloat(p.split(',')[1]));
-  const cx=xs.reduce((a,b)=>a+b)/xs.length;
-  const cy=ys.reduce((a,b)=>a+b)/ys.length;
-  const ll=document.getElementById('laser-line');
-  ll.setAttribute('x1','0');ll.setAttribute('y1',String(cy));
-  ll.setAttribute('x2',String(cx));ll.setAttribute('y2',String(cy));
-  ll.setAttribute('stroke',getColourHex());ll.setAttribute('opacity','1');
-  document.getElementById('laser-label').setAttribute('y',String(cy-8));
-  document.getElementById('laser-label').setAttribute('opacity','1');
-  // Show refracted light
-  ['uv','vi','bl','gr','rd'].forEach(id=>{
-    document.getElementById('refr-'+id).setAttribute('opacity','0.7');
-    const ry=cy-20+['uv','vi','bl','gr','rd'].indexOf(id)*10;
-    document.getElementById('refr-'+id).setAttribute('y1',String(cy));
-    document.getElementById('refr-'+id).setAttribute('y2',String(ry));
-    document.getElementById('refr-'+id).setAttribute('x1',String(cx+40));
-  });
-  document.getElementById('lens-label').setAttribute('opacity','1');
-  document.getElementById('lens-label').setAttribute('y',String(cy-5));
+function scanStep(){
+  af=scanFacet;
+  document.getElementById('facet-slider').value=Math.min(af,56);
+  const cs=document.getElementById('colour-select');
+  cs.selectedIndex=scanColourIdx;
+  updateAll();
+  const fd=gfd(af);
+  document.getElementById('scan-status').textContent=
+    'Scan: facet #'+af+' ('+fd.g+') — '+scanColours[scanColourIdx]+' — θ='+fd.theta.toFixed(1)+'° φ='+fd.phi.toFixed(1)+'°';
+  // Next: cycle colour first, then facet
+  scanColourIdx++;
+  if(scanColourIdx>=5){scanColourIdx=0;scanFacet++;if(scanFacet>56){scanFacet=0;log('SCAN: komplet cyklus (57 facetter × 5 farver = 285 positioner)');}}
 }
-
-function updateSensor(channels){
-  const map={uv:'uv',violet:'vi',blå:'bl',grøn:'gr',rød:'rd'};
-  // Reset all
-  Object.values(map).forEach(id=>{
-    document.getElementById('bar-'+id).style.width='0%';
-    document.getElementById('sv-'+id).textContent='—';
-  });
-  for(const[col,v]of Object.entries(channels)){
-    const id=map[col];
-    if(!id)continue;
-    const pct=Math.min(100,v.value/getValue()*80+20);
-    document.getElementById('bar-'+id).style.width=pct+'%';
-    document.getElementById('sv-'+id).textContent=v.value.toLocaleString();
-  }
-}
-
-function updateChain(){
-  const cp=document.getElementById('chain-panel');
-  cp.innerHTML='';
-  for(const e of sim.chain){
-    const cls=e.op==='WRITE'?'t-w':'t-e';
-    cp.innerHTML+=`<div class="chain-entry"><span><span class="tag ${cls}">${e.op}</span> ${e.addr}</span><span style="color:#333">${e.hash.slice(0,10)}…</span></div>`;
-  }
-  for(const w of sim.wallets){
-    cp.innerHTML+=`<div class="chain-entry"><span><span class="tag t-wallet">WALLET</span> ${w.value.toLocaleString()}</span><span style="color:#00ff88">✓</span></div>`;
-  }
-  document.getElementById('st-f').textContent=sim.facetsUsed();
-  document.getElementById('st-b').textContent=sim.chain.length;
-  document.getElementById('st-w').textContent=sim.wallets.length;
-}
-
-function doStore(){
-  const f=activeFacet, col=getColour(), val=getValue(), base=getBase();
-  try{
-    const res=sim.store(f,col,val,base);
-    highlightFacet(f);
-    showLaser(f);
-    log(`WRITE ${res.addr} — ${res.b}^${res.e} + ${res.r} = ${val}`);
-    updateChain();
-  }catch(e){log(`FEJL: ${e.message}`)}
-}
-
-function doLoad(){
-  const f=activeFacet, col=getColour();
-  const d=sim.load(f,col);
-  highlightFacet(f);
-  showLaser(f);
-  const rd=document.getElementById('read-display');
-  if(d){
-    rd.style.display='block';
-    document.getElementById('read-value').textContent=d.value.toLocaleString();
-    document.getElementById('read-repr').textContent=`${d.b}^${d.e} + ${d.r}`;
-    log(`LOAD C0:F${f}:${col}:D0 = ${d.value}`);
-  }else{
-    rd.style.display='block';
-    document.getElementById('read-value').textContent='(tom)';
-    document.getElementById('read-repr').textContent='Ingen data på denne position';
-    log(`LOAD C0:F${f}:${col}:D0 = (ingen data)`);
-  }
-}
-
-function doLensCapture(){
-  const f=activeFacet;
-  const channels=sim.lensCapture(f);
-  highlightFacet(f);
-  showLaser(f);
-  updateSensor(channels);
-  const cols=Object.entries(channels).map(([c,v])=>`${c}:${v.value}`).join(' ');
-  log(`LENS facet #${f} → ${cols||'(ingen data)'}`);
-}
-
-function doLensToChain(){
-  const n=sim.lensToChain();
-  log(`LENS→CHAIN: ${n} payload(s) → blockchain${sim.valid()?' ✓':' ✗'}`);
-  updateChain();
-}
-
-function switchTab(t){
-  document.getElementById('tab-cpl').className='tab'+(t==='cpl'?' active':'');
-  document.getElementById('tab-py').className='tab'+(t==='py'?' active':'');
-  document.getElementById('code-cpl').style.display=t==='cpl'?'block':'none';
-  document.getElementById('code-py').style.display=t==='py'?'block':'none';
-}
-
-function runCode(){
-  const isCpl=document.getElementById('code-cpl').style.display!=='none';
-  const code=isCpl?document.getElementById('code-cpl').value:document.getElementById('code-py').value;
-  log(`[${isCpl?'CPL':'Python'}] Kører program...`);
-  const lines=code.split('\n').map(l=>l.trim()).filter(l=>l&&!l.startsWith('//')&&!l.startsWith('#'));
-  for(const line of lines){
-    try{
-      if(isCpl){
-        if(line.startsWith('var ')){const m=line.match(/var\s+(\w+)\s*=\s*(\d+)/);if(m)window['_v_'+m[1]]=parseInt(m[2])}
-        else if(line.startsWith('store ')){const m=line.match(/store\s+(\w+)\s+at\s+facet\((\d+),\s*(\d+)\)\s+colour\s+(\w+)/i);if(m){const val=window['_v_'+m[1]]||parseInt(m[1]);const col=m[4].toLowerCase()==='green'?'grøn':m[4].toLowerCase()==='red'?'rød':m[4].toLowerCase()==='blue'?'blå':m[4].toLowerCase();const f=parseInt(m[3]);activeFacet=f;document.getElementById('facet-slider').value=f;const cs=document.getElementById('colour-select');for(let i=0;i<cs.options.length;i++)if(cs.options[i].value===col)cs.selectedIndex=i;doStore()}}
-        else if(line.startsWith('lens_capture')){const m=line.match(/lens_capture\s+facet\((\d+),\s*(\d+)\)/);if(m){activeFacet=parseInt(m[2]);doLensCapture()}}
-        else if(line.startsWith('lens_to_chain')){doLensToChain()}
-        else if(line.startsWith('load ')){const m=line.match(/load\s+(\w+)\s+from\s+facet\((\d+),\s*(\d+)\)\s+colour\s+(\w+)/i);if(m){activeFacet=parseInt(m[3]);const col=m[4].toLowerCase()==='green'?'grøn':m[4].toLowerCase()==='red'?'rød':m[4].toLowerCase()==='blue'?'blå':m[4].toLowerCase();const cs=document.getElementById('colour-select');for(let i=0;i<cs.options.length;i++)if(cs.options[i].value===col)cs.selectedIndex=i;doLoad()}}
-        else if(line.startsWith('print ')){const m=line.match(/print\s+(\w+)/);if(m)log(`[print] ${window['_v_'+m[1]]||'?'}`)}
-      }else{
-        // Python-style
-        if(line.includes('cx.store(')){const m=line.match(/facet=(\d+).*colour="(\w+)".*value=(\d+)(?:.*base=(\d+))?/);if(m){activeFacet=parseInt(m[1]);const col=m[2].toLowerCase()==='green'?'grøn':m[2].toLowerCase()==='red'?'rød':m[2].toLowerCase()==='blue'?'blå':m[2].toLowerCase();document.getElementById('facet-slider').value=activeFacet;const cs=document.getElementById('colour-select');for(let i=0;i<cs.options.length;i++)if(cs.options[i].value===col)cs.selectedIndex=i;document.getElementById('value-input').value=m[3];if(m[4])document.getElementById('base-select').value=m[4];doStore()}}
-        else if(line.includes('cx.lens_capture(')){const m=line.match(/facet=(\d+)/);if(m){activeFacet=parseInt(m[1]);doLensCapture()}}
-        else if(line.includes('cx.lens_to_chain')){doLensToChain()}
-        else if(line.includes('cx.load(')){const m=line.match(/facet=(\d+).*colour="(\w+)"/);if(m){activeFacet=parseInt(m[1]);const col=m[2].toLowerCase()==='green'?'grøn':m[2].toLowerCase()==='red'?'rød':m[2].toLowerCase()==='blue'?'blå':m[2].toLowerCase();const cs=document.getElementById('colour-select');for(let i=0;i<cs.options.length;i++)if(cs.options[i].value===col)cs.selectedIndex=i;doLoad()}}
-        else if(line.includes('print(')){const m=line.match(/print\((\w+)\)/);if(m)log(`[print] ${window['_v_'+m[1]]||sim.load(activeFacet,getColour())?.value||'?'}`)}
-      }
-    }catch(e){log(`FEJL: ${e.message}`)}
-  }
-  log(`Program afsluttet ✓`);
-}
-
-// Init
-updateFacetLabel();
-document.getElementById('colour-select').onchange=()=>highlightFacet(activeFacet);
+updateAll();document.getElementById('colour-select').onchange=updateAll;
 </script>
 </body>
 </html>
