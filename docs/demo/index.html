@@ -114,11 +114,11 @@ function buildCrystalSVG(nc){
       {id:`c${c}f7`,p:`${ox+20*s},${90*s} ${ox+60*s},${80*s} ${ox+10*s},${100*s}`},
       {id:`c${c}f8`,p:`${ox+180*s},${90*s} ${ox+140*s},${80*s} ${ox+190*s},${100*s}`},
     ];
-    svg+=`<line x1="${ox}" y1="${105*s}" x2="${ox+200*s}" y2="${105*s}" stroke="#00ff8833" stroke-width="0.5"/>`;
-    svg+=`<polygon points="${ox},${105*s} ${ox+100*s},${240*s} ${ox+60*s},${105*s}" fill="#080808" stroke="#00ff8818" stroke-width="0.5"/>`;
-    svg+=`<polygon points="${ox+60*s},${105*s} ${ox+100*s},${240*s} ${ox+140*s},${105*s}" fill="#0a0a0a" stroke="#00ff8818" stroke-width="0.5"/>`;
-    svg+=`<polygon points="${ox+140*s},${105*s} ${ox+100*s},${240*s} ${ox+200*s},${105*s}" fill="#080808" stroke="#00ff8818" stroke-width="0.5"/>`;
-    pts.forEach(pt=>{svg+=`<polygon id="${pt.id}" class="fp" points="${pt.p}" fill="#111" stroke="#00ff8833" stroke-width="0.5" onclick="clickFacet(${parseInt(pt.id.split('f')[1])})"/>`});
+    svg+=`<line x1="${ox}" y1="${105*s}" x2="${ox+200*s}" y2="${105*s}" stroke="#00ff8866" stroke-width="0.5"/>`;
+    svg+=`<polygon points="${ox},${105*s} ${ox+100*s},${240*s} ${ox+60*s},${105*s}" fill="#151515" stroke="#00ff8855" stroke-width="0.5"/>`;
+    svg+=`<polygon points="${ox+60*s},${105*s} ${ox+100*s},${240*s} ${ox+140*s},${105*s}" fill="#181818" stroke="#00ff8855" stroke-width="0.5"/>`;
+    svg+=`<polygon points="${ox+140*s},${105*s} ${ox+100*s},${240*s} ${ox+200*s},${105*s}" fill="#151515" stroke="#00ff8855" stroke-width="0.5"/>`;
+    pts.forEach(pt=>{svg+=`<polygon id="${pt.id}" class="fp" points="${pt.p}" fill="#1a1a1a" stroke="#00ff8866" stroke-width="0.5" onclick="clickFacet(${parseInt(pt.id.split('f')[1])})"/>`});
     svg+=`<text x="${ox+100*s}" y="${255*s}" fill="#00ff8844" font-size="9" text-anchor="middle">C${c}</text>`;
   }
   svg+=`<line id="laser-line" x1="0" y1="0" x2="0" y2="0" stroke="#00ff88" stroke-width="2.5" stroke-dasharray="6,3" opacity="0"><animate attributeName="stroke-dashoffset" values="0;-9" dur="0.4s" repeatCount="indefinite"/></line>`;
