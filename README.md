@@ -256,6 +256,7 @@ chromaplex python script.py
 - **[chromaplex-os-compiler](https://github.com/Janus5G/chromaplex-os-compiler)** — Compiler toolchain with browser 3D simulator
 - **[Cplex](https://github.com/Janus5G/Cplex)** — Rust/Slint desktop IDE
 - **[ChromaPlex Wallet](https://chromaplex-wallet-sgm.caffeine.xyz/)** — Live blockchain wallet on Internet Computer
+- **[ChromaBridge](https://github.com/Janus5G/ChromaBridge)** – Enterprise Web3-dataoverførsel og Proof-of-Work-pipeline baseret på Chromaplex OS v2.
 
 ---
 
